@@ -1,0 +1,48 @@
+version: '3'
+services:
+
+  switch2-redis:
+    build:
+      image: redis:5.0.12-alpine3.13
+      restart: always
+      expose:
+        - 6379
+      networks:
+        - switch2
+
+  switch2-rabbitmq:
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - 5672
+      - 15672
+    labels:
+      - "traefik.frontend.rule=Host:switch2-rabbitmq.tangogolf.lan"
+      - "traefik.port=15672"
+    networks:
+      - switch2
+
+  switch2-consumer-rs:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile.roller-shutter
+    restart: always
+    networks:
+      - switch2
+
+  switch2-management:
+    build:
+      context: ./management
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - 5000
+    labels:
+      - "traefik.frontend.rule=Host:switch2.tangogolf.lan"
+    networks:
+      - switch2
+
+networks:
+  switch2:

@@ -7,7 +7,7 @@ services:
     expose:
       - 6379
     networks:
-      - switch2
+      - network
 
   switch2-rabbitmq:
     build:
@@ -21,7 +21,7 @@ services:
       - "traefik.frontend.rule=Host:switch2-rabbitmq.tangogolf.lan"
       - "traefik.port=15672"
     networks:
-      - switch2
+      - network
 
   switch2-consumer-rs:
     build:
@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile.roller-shutter
     restart: always
     networks:
-      - switch2
+      - network
 
   switch2-management:
     build:
@@ -40,10 +40,10 @@ services:
       - 5000
     labels:
       - "traefik.frontend.rule=Host:switch2.tangogolf.lan"
-    networks:
-      - switch2
     volumes:
       - "./json:/json"
+    networks:
+      - network
 
 networks:
-  switch2:
+  network:

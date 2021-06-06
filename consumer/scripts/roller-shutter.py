@@ -3,6 +3,7 @@
 import pika
 import json
 import requests
+import sys
 
 sys.path.append("/consumer/bin")
 from classes.const import const

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  </b>RÄUME</b>
+  {% for r in rooms %}
+    <p><a href="/rooms/{{ r[0] }}">{{ r[1] }}</a></p>
+  {% endfor %}
+
+{% endblock %}

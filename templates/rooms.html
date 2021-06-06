@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<b>{{ room_data[1] }}</b>
+  <table>
+  {% for r in room_data[2] %}
+    <form id="produce" action="{{ url_for('produce') }}", method="post">
+    <tr>
+      <td>{{ r.desc }}</td>
+      <td>zu</td>
+      <td>
+        <input type="hidden" name="id" value="{{ r.id }}">
+        <input type="hidden" name="ise_id" value="{{ r.ise_id }}">
+        <input type="hidden" name="room_id" value="{{ room_data[0] }}">
+        <input type="range" name="new_value" value="0.6" list="tickmarks" min="0" max="1" step="0.1">
+        <datalist id="tickmarks">
+          <option value="0.0" label="0%"></option>
+          <option value="0.1"></option>
+          <option value="0.2"></option>
+          <option value="0.3"></option>
+          <option value="0.4"></option>
+          <option value="0.5"></option>
+          <option value="0.6"></option>
+          <option value="0.7"></option>
+          <option value="0.8"></option>
+          <option value="0.9"></option>
+          <option value="1.0" label="100%"></option>
+        </datalist>
+      </td>
+      <td>auf</td>
+      <td>
+        <input type="submit" name="submit" value="submit">
+      </td>
+    </tr>
+    </form>
+  {% endfor %}
+  </table>
+
+{% endblock %}

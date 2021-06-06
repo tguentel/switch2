@@ -3,7 +3,6 @@
 import pika
 import json
 import requests
-import sys
 
 sys.path.append("/consumer/bin")
 from classes.const import const
@@ -25,7 +24,6 @@ def consume(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def main():
-    sys.stderr.write("Consumer started")
     declarations()
     rabbitmq.channel.basic_consume(queue_name, on_message_callback=consume)
     rabbitmq.channel.start_consuming()

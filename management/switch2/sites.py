@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import json, sys
+import json
 
 from flask import render_template
 

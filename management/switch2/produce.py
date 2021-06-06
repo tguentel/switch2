@@ -2,7 +2,6 @@
 
 import pika
 import json
-import sys
 
 from flask import redirect
 from flask import url_for

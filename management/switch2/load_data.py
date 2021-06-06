@@ -5,6 +5,8 @@ import glob
 import os
 import sys
 
+from flask import redirect
+
 from switch2 import app
 from switch2 import redis_db0
 
@@ -18,4 +20,4 @@ def load_data():
             with open(datafile) as input:
                 jsondata = json.load(input)
             redis_db0.set(os.path.basename(datafile).split('.')[0], json.dumps(jsondata).replace('\n',''))
-    return("Data loaded")
+    return redirect("/")

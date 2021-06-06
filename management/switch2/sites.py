@@ -12,12 +12,17 @@ from switch2 import redis_db0
 def main_menu():
     rooms = []
     get_rooms = redis_db0.get('rooms')
-    for r in json.loads(get_rooms)['rooms']:
-        rooms.append([ r['room_id'], r['desc'] ])
-    return render_template(
-            'index.html',
-            rooms = rooms
-            )
+    if get_rooms == None:
+        return render_template(
+                'reload.html'
+                )
+    else:
+        for r in json.loads(get_rooms)['rooms']:
+            rooms.append([ r['room_id'], r['desc'] ])
+        return render_template(
+                'index.html',
+                rooms = rooms
+                )
 
 @app.route("/rooms/<int:room_id>")
 def rooms_menu(room_id):

@@ -6,7 +6,7 @@ count = 0
 status = 1
 
 credentials = pika.PlainCredentials('rabbit', 'RabbitPass21')
-parameters = pika.ConnectionParameters(credentials=credentials, host='switch-rabbitmq', virtual_host='/')
+parameters = pika.ConnectionParameters(credentials=credentials, host='switch2-rabbitmq', virtual_host='/')
 
 while status == 1:
     if count <= 6:

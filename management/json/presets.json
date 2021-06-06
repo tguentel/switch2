@@ -1,0 +1,19 @@
+{
+  "presets": [
+    {
+      "preset_id": 1,
+      "name": "Aufwachen",
+      "devices": [
+        { "type": "rs", "state": 0.3 }
+      ]
+    },
+    {
+      "preset_id": 2,
+      "name": "Sonnenschutz",
+      "devices": [
+        {"type": "rs", "state": 0.6 }
+      ]
+    }
+  ]
+}
+

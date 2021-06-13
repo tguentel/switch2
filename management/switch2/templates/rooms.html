@@ -2,9 +2,9 @@
 
 {% block content %}
 
-{% set show = {'rs': False, 'th': False} %}
+{% set show = {'rs': False, 'th': False} -%}
 
-{% for r in room_data[2] %}
+{% for r in room_data[2] -%}
   {% if "rs" in r.id %}
     {% if show.update({'rs': True}) %}{% endif %}
   {% endif %}
@@ -12,15 +12,15 @@
   {% if "th" in r.id %}
   {% if show.update({'th': True}) %}{% endif %}
   {% endif %}
-{% endfor %}
+{% endfor -%}
 
 <table border=2>
 
-  {% if show.rs == True %}
+  {% if show.rs == True -%}
     {% include "rollershutter.html" %}
   {% endif %}
 
-  {% if show.th == True %}
+  {% if show.th == True -%}
     {% include "thermostat.html" %}
   {% endif %}
 

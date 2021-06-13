@@ -1,6 +1,6 @@
 <script>
-  function show_rs_slider_value(value) {
-      document.getElementById("{{ r.id }}_slider").innerHTML = value * 100;
+  function show_rs_slider_value(value, id) {
+      document.getElementById(`${id}_slider`).innerHTML = value * 100;
   }
 </script>
 
@@ -12,7 +12,7 @@
     <input type="hidden" name="id" value="{{ r.id }}">
     <input type="hidden" name="ise_id" value="{{ r.ise_id }}">
     <input type="hidden" name="room_id" value="{{ room_data[0] }}">
-    <input type="range" name="new_value" value="0.6" list="{{ r.id }}_tickmarks" min="0" max="1" step="0.1" oninput="show_rs_slider_value(this.value)" onload="show_rs_slider_value(this.value)">
+    <input type="range" name="new_value" value="0.6" list="{{ r.id }}_tickmarks" min="0" max="1" step="0.1" oninput="show_rs_slider_value(this.value, '{{ r.id }}')" onload="show_rs_slider_value(this.value, '{{ r.id }}')">
     <datalist id="{{ r.id }}_tickmarks">
       <option value="0.0"></option>
       <option value="0.1"></option>
@@ -27,7 +27,7 @@
       <option value="1.0"></option>
     </datalist>
   </td>
-  <td width="150px">
+  <td width="50px">
     <p id="{{ r.id }}_slider"></p> %
   </td>
 </tr>

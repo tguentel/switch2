@@ -1,0 +1,38 @@
+<script>
+function show_th_slider_value(value) {
+  document.getElementById("th_slider").innerHTML = value;
+}
+</script>
+
+
+<tr>
+  <td colspan="3">
+    {{ r.desc }}
+  </td>
+  <td>
+    <input type="hidden" name="id" value="{{ r.id }}">
+    <input type="hidden" name="ise_id" value="{{ r.ise_id }}">
+    <input type="hidden" name="room_id" value="{{ room_data[0] }}">
+    <input type="range" name="new_value" value="18.0" list="th_tickmarks" min="13.0" max="26.0" step="1.0" oninput="show_th_slider_value(this.value)" onload="show_th_slider_value(this.value)">
+    <datalist id="th_tickmarks">
+      <option value=""></option>
+      <option value="13.0"></option>
+      <option value="14.0"></option>
+      <option value="15.0"></option>
+      <option value="16.0"></option>
+      <option value="17.0"></option>
+      <option value="18.0"></option>
+      <option value="19.0"></option>
+      <option value="20.0"></option>
+      <option value="21.0"></option>
+      <option value="22.0"></option>
+      <option value="23.0"></option>
+      <option value="24.0"></option>
+      <option value="25.0"></option>
+      <option value="26.0"></option>
+    </datalist>
+  </td>
+  <td width="150px">
+    <p id="th_slider"></p> °C
+  </td>
+</tr>

@@ -1,0 +1,17 @@
+<form id="produce_rs" action="{{ url_for('produce') }}", method="post">
+  <tr>
+    <td colspan="5">
+      <p><b>Roller Shutter</b></p>
+    </td>
+  </tr>
+  {% for r in room_data[2] %}
+    {% if "rs" in r.id %}
+      {% include "rollershutter_detail.html" %}
+    {% endif %}
+  {% endfor %}
+  <tr>
+    <td colspan=5>
+      <input type="submit" name="submit" value="submit">
+    <td>
+  </tr>
+</form>

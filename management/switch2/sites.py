@@ -18,7 +18,8 @@ def main_menu():
                 )
     else:
         for r in json.loads(get_rooms)['rooms']:
-            rooms.append([ r['room_id'], r['desc'] ])
+            if 'devices' in r:
+                rooms.append([ r['room_id'], r['desc'] ])
         return render_template(
                 'index.html',
                 rooms = rooms
@@ -28,7 +29,7 @@ def main_menu():
 def rooms_menu(room_id):
     get_rooms = redis_db0.get('rooms')
     for r in json.loads(get_rooms)['rooms']:
-        if r['room_id'] == room_id and r['devices']:
+        if r['room_id'] == room_id:
             room_data = [ r['room_id'], r['desc'], r['devices'] ]
             return render_template(
                 'rooms.html',

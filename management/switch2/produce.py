@@ -2,6 +2,7 @@
 
 import pika
 import json
+import sys
 
 from flask import redirect
 from flask import url_for
@@ -20,15 +21,18 @@ def rabbitmq_produce(msg, queue):
 
 @app.route('/produce', methods=['POST'])
 def produce():
-    id = request.form.get("id")
-    ise_id = request.form.get("ise_id")
-    new_value = request.form.get("new_value")
-    room_id = request.form.get("room_id")
-    redirect_target = "/rooms/" + room_id
-    rmq_data = {
-            "id": id,
-            "ise_id": ise_id,
-            "new_value": new_value,
-            }
-    rabbitmq_produce(json.dumps(rmq_data), "switch_command")
+    id = request.form.getlist('id')
+    ise_id = request.form.getlist('ise_id')
+    room_id = request.form.getlist('room_id')
+    new_value = request.form.getlist('new_value')
+
+    for i in range(len(id)):
+        rmq_data = {
+                "id": id[i],
+                "ise_id": ise_id[i],
+                "new_value": new_value[i],
+                }
+        redirect_target = "/rooms/" + room_id[i]
+        rabbitmq_produce(json.dumps(rmq_data), "switch_command")
+
     return redirect(redirect_target)

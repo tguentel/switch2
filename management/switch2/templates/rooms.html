@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
 {% set show = {'rs': False, 'th': False} -%}
 
 {% for r in room_data[2] -%}
@@ -24,12 +23,9 @@
     {% include "thermostat.html" %}
   {% endif %}
 
-  <tr>
-    <td>
-      <a href="/">back</a>
-    </td>
-  </tr>
-
 </table>
+{% endblock %}
 
+{% block footer %}
+  <p><a href="/">back</a></p>
 {% endblock %}

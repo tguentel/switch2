@@ -1,25 +1,17 @@
 <!DOCTYPE html>
 <html lang="de">
-
   <head>
-
-    <title>tangogolf Switch 2</title>
+    <title>{{ page_title }}</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content='width=device-width, initial-scale=1.5, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" media="screen" />
-    <link rel="icon" href="{{ url_for('static', filename='tg_fav.png') }}" type="image/jpg"/>
-
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" media="screen" />
+    <link rel="icon" href="{{ url_for('static', filename='img/tg_fav.png') }}" type="image/jpg"/>
   </head>
 
   <body>
-
-    <div id='cntr'>
-      {% block content %}
-      {% endblock %}
-    </div>
-
+    <div id='cntr'>{% block content %}{% endblock %}</div>
+    <div id='cntr'>{% block footer %}{% endblock %}</div>
   </body>
-
 </html>

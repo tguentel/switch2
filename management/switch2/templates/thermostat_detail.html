@@ -1,10 +1,4 @@
-<script>
-function show_th_slider_value(value, id) {
-    document.getElementById(`${id}_slider").innerHTML = value;
-}
-</script>
-
-
+<script type="text/javascript" src="{{ url_for('static', filename='js/slider_value.js') }}"></script>
 <tr>
   <td colspan="3">
     {{ r.desc }}
@@ -13,7 +7,7 @@ function show_th_slider_value(value, id) {
     <input type="hidden" name="id" value="{{ r.id }}">
     <input type="hidden" name="ise_id" value="{{ r.ise_id }}">
     <input type="hidden" name="room_id" value="{{ room_data[0] }}">
-    <input type="range" name="new_value" value="18.0" list="{{ r.id }}_tickmarks" min="13.0" max="26.0" step="1.0" oninput="show_th_slider_value(this.value, '{{ r.id }}')" onload="show_th_slider_value(this.value, '{{ r.id }}')">
+    <input type="range" name="new_value" value="{{ th_initial_value }}" list="{{ r.id }}_tickmarks" min="13.0" max="26.0" step="1" oninput="th_slider_value(this.value, '{{ r.id }}')">
     <datalist id="{{ r.id }}_tickmarks">
       <option value="13.0"></option>
       <option value="14.0"></option>
@@ -32,6 +26,6 @@ function show_th_slider_value(value, id) {
     </datalist>
   </td>
   <td width="50px">
-    <p id="{{ r.id }}}_slider"></p> °C
+    <span id="{{ r.id }}_slider">{{ th_initial_value }}</span> °C
   </td>
 </tr>

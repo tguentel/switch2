@@ -22,7 +22,8 @@ def main_menu():
                 rooms.append([ r['room_id'], r['desc'] ])
         return render_template(
                 'index.html',
-                rooms = rooms
+                rooms = rooms,
+                page_title = app.config['PAGE_TITLE']
                 )
 
 @app.route("/rooms/<int:room_id>")
@@ -33,5 +34,8 @@ def rooms_menu(room_id):
             room_data = [ r['room_id'], r['desc'], r['devices'] ]
             return render_template(
                 'rooms.html',
-                room_data = room_data
+                room_data = room_data,
+                page_title = app.config['PAGE_TITLE'],
+                rs_initial_value = app.config['RS_INITIAL_VALUE'],
+                th_initial_value = app.config['TH_INITIAL_VALUE']
                 )

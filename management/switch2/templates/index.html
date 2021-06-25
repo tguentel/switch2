@@ -1,10 +1,25 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-  </b>RÄUME</b>
-  {% for r in rooms %}
-    <p><a href="/rooms/{{ r[0] }}">{{ r[1] }}</a></p>
+  <table>
+    <tr>
+      <td>
+        </b>ROOMS</b>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <hr>
+      </td>
+    </tr>
+    {% for r in rooms %}
+    <tr>
+      <td>
+        <p><a href="/rooms/{{ r[0] }}">{{ r[1] }}</a></p>
+      </td>
+    </tr>
   {% endfor %}
+{% endblock %}
 
+{% block footer %}
 {% endblock %}

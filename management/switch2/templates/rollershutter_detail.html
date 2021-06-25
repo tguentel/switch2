@@ -23,6 +23,6 @@
     </datalist>
   </td>
   <td id="valuefield">
-    <span id="{{ r.id }}_slider">{{ rs_initial_value * 100 }}</span> %
+    <span id="{{ r.id }}_slider">{{ (rs_initial_value * 100)|int }}</span> %
   </td>
 </tr>

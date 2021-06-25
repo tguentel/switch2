@@ -3,6 +3,10 @@ services:
 
   switch2-redis:
     ports:
+      - "6379:6379"
+
+  switch2-rabbitmq:
+    ports:
       - "15672:15672"
 
   switch2-management:

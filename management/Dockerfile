@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir \
   flask \
   flask_redis \
   pika \
+  requests \
   gunicorn
 
 COPY setup.py /switch2/

@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 
+
 {% block content %}
+{{ rooms }}
   <table>
     <tr>
       <td>
@@ -12,10 +14,10 @@
         <hr>
       </td>
     </tr>
-    {% for r in rooms %}
+    {% for room in rooms %}
     <tr>
       <td>
-        <p><a href="/rooms/{{ r[0] }}">{{ r[1] }}</a></p>
+        <p><a href="/room/{{ room['id'] }}">{{ room['name'] }}</a></p>
       </td>
     </tr>
   {% endfor %}

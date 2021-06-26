@@ -4,8 +4,11 @@
       <p><b>Roller Shutter</b></p>
     </td>
   </tr>
-  {% for r in room_data[2] -%}
-    {% if "rs" in r.id -%}
+  {% for r in room_data -%}
+    {% if "BROLL" in r['model'] -%}
+      {% set name = r['name'] %}
+      {% set current = r['index']['3'][datapoint] %}
+      {% set control = r['index']['4'][datapoint] %}
       {% include "rollershutter_detail.html" %}
     {% endif %}
   {% endfor %}

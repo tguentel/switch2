@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import json
+import sys
 
 from flask import render_template
 
@@ -10,32 +11,47 @@ from switch2 import redis_db0
 
 @app.route("/")
 def main_menu():
-    rooms = []
-    get_rooms = redis_db0.get('rooms')
+    get_rooms = redis_db0.get('devicelist')
     if get_rooms == None:
         return render_template(
                 'reload.html'
                 )
     else:
-        for r in json.loads(get_rooms)['rooms']:
-            if 'devices' in r:
-                rooms.append([ r['room_id'], r['desc'] ])
+        jr = json.loads(get_rooms)
+        rooms = []
+        for r in jr['devices']:
+            try:
+                jr['devices'][r]['room']
+            except:
+                pass
+            else:
+                if jr['devices'][r]['room'] not in rooms:
+                    rooms.append(jr['devices'][r]['room'])
+        rooms = sorted(rooms, key=lambda item: item.get("name"))
         return render_template(
                 'index.html',
                 rooms = rooms,
                 page_title = app.config['PAGE_TITLE']
                 )
 
-@app.route("/rooms/<int:room_id>")
+@app.route("/room/<int:room_id>")
 def rooms_menu(room_id):
-    get_rooms = redis_db0.get('rooms')
-    for r in json.loads(get_rooms)['rooms']:
-        if r['room_id'] == room_id:
-            room_data = [ r['room_id'], r['desc'], r['devices'] ]
-            return render_template(
-                'rooms.html',
-                room_data = room_data,
-                page_title = app.config['PAGE_TITLE'],
-                rs_initial_value = app.config['RS_INITIAL_VALUE'],
-                th_initial_value = app.config['TH_INITIAL_VALUE']
-                )
+    get_rooms = redis_db0.get('devicelist')
+    jr = json.loads(get_rooms)
+    room_data = []
+    for r in jr['devices']:
+        try:
+            jr['devices'][r]['room']['id']
+        except:
+            pass
+        else:
+            if int(jr['devices'][r]['room']['id']) == room_id:
+                room_data.append(jr['devices'][r])
+
+    return render_template(
+        'rooms.html',
+        room_data = room_data,
+        page_title = app.config['PAGE_TITLE'],
+        rs_initial_value = app.config['RS_INITIAL_VALUE'],
+        th_initial_value = app.config['TH_INITIAL_VALUE']
+        )

@@ -3,12 +3,12 @@
 {% block content %}
 {% set show = {'rs': False, 'th': False} -%}
 
-{% for r in room_data[2] -%}
-  {% if "rs" in r.id %}
+{% for r in room_data -%}
+  {% if "BROLL" in r['model'] %}
     {% if show.update({'rs': True}) %}{% endif %}
   {% endif %}
 
-  {% if "th" in r.id %}
+  {% if "BWTH" in r['model'] %}
   {% if show.update({'th': True}) %}{% endif %}
   {% endif %}
 {% endfor -%}

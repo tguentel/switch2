@@ -57,6 +57,7 @@ def rooms_menu(room_id):
                 else:
                     current = jc['values'][r]
                     jr['devices'][r].update({'current': current })
+                    jr['devices'][r].update({'device': r })
                     room_data.append(jr['devices'][r])
 
     return render_template(

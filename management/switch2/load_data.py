@@ -62,3 +62,42 @@ def load_data():
     redis_db0.set("devicelist", json.dumps(devicelist))
 
     return redirect("/")
+
+
+def gather_current_values(url):
+    s = requests.get(url)
+    s_root = ET.fromstring(s.text)
+
+    for s in s_root:
+        jda = json.loads(str(s.attrib).replace("'",'"'))
+        value = jda['value']
+
+    return str(round(float(value), 2))
+
+@app.route("/update")
+def update_states():
+    state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATE'] + "?datapoint_id=%s"
+    devices = redis_db0.get('devicelist')
+    currentvalues = {'values': {}}
+
+    if devices == None:
+        return render_template(
+            'reload.html'
+            )
+    else:
+        jde = json.loads(devices)
+        for d in jde['devices']:
+            try:
+                jde['devices'][d]['model']
+            except:
+                pass
+            else:
+                if jde['devices'][d]['model'] == "HmIP-BROLL":
+                    datapoint = jde['devices'][d]['index']['3']['datapoint']
+                    value = gather_current_values(state_url % datapoint)
+                    currentvalues['values'].update({d: value })
+
+    redis_db0.set("currentvalues", json.dumps(currentvalues))
+
+    return redirect("/")
+

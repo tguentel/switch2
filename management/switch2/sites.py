@@ -37,7 +37,11 @@ def main_menu():
 @app.route("/room/<int:room_id>")
 def rooms_menu(room_id):
     get_rooms = redis_db0.get('devicelist')
+    get_current = redis_db0.get('currentvalues')
+
     jr = json.loads(get_rooms)
+    jc = json.loads(get_current)
+
     room_data = []
     for r in jr['devices']:
         try:
@@ -46,7 +50,14 @@ def rooms_menu(room_id):
             pass
         else:
             if int(jr['devices'][r]['room']['id']) == room_id:
-                room_data.append(jr['devices'][r])
+                try:
+                    jc['values'][r]
+                except:
+                    pass
+                else:
+                    current = jc['values'][r]
+                    jr['devices'][r].update({'current': current })
+                    room_data.append(jr['devices'][r])
 
     return render_template(
         'rooms.html',

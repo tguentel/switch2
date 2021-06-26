@@ -15,7 +15,7 @@ queue_name = "switch_command"
 def declarations():
     rabbitmq.channel.queue_declare(queue=queue_name, durable=False)
 
-def statechange(id, ise_id, new_value):
+def statechange(ise_id, new_value):
     url = "%s%s%s/statechange.cgi?ise_id=%s&new_value=%s" % (const.ccu_proto, const.ccu_addr, const.ccu_res, ise_id, new_value)
     r = requests.get(url)
 

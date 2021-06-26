@@ -21,7 +21,7 @@ def statechange(id, ise_id, new_value):
 
 def consume(ch, method, properties, body):
     msg = json.loads(body)
-    statechange(msg['id'], msg['ise_id'], msg['new_value'])
+    statechange(msg['ise_id'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def main():

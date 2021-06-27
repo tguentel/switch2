@@ -13,12 +13,16 @@ from switch2 import redis_db0
 def load_data():
     room_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_ROOMLIST']
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATELIST']
+    function_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_FUNCTIONLIST']
 
     r = requests.get(room_url)
     r_root = ET.fromstring(r.text)
 
     s = requests.get(state_url)
     s_root = ET.fromstring(s.text)
+
+    f = requests.get(function_url)
+    f_root = ET.fromstring(f.text)
 
     roomlist = {'rooms': {}}
     for r in r_root:
@@ -29,6 +33,16 @@ def load_data():
         for c in r:
             jc = json.loads(str(c.attrib).replace("'",'"'))
             roomlist['rooms'][room]['channels'].append(jc['ise_id'])
+
+    functionlist = {'functions': {}}
+    for f in f_root:
+        jf = json.loads(str(f.attrib).replace("'",'"'))
+        function = jf['ise_id']
+        name = jf['name']
+        functionlist['functions'].update({function: {'name': name, 'channels': []}})
+        for c in f:
+            jc = json.loads(str(c.attrib).replace("'",'"'))
+            functionlist['functions'][function]['channels'].append(jc['ise_id'])
 
     devicelist = {'devices': {}}
     for s in s_root:
@@ -51,12 +65,16 @@ def load_data():
                         devicelist['devices'][device]['index'][index].update({'channel': channel})
                         devicelist['devices'][device]['index'][index].update({'datapoint': datapoint})
                         for room in roomlist['rooms']:
-                            print()
-                            print('')
                             if channel in roomlist['rooms'][room]['channels']:
                                 devicelist['devices'][device].update({'room': {
                                     'id': room,
                                     'name': roomlist['rooms'][room]['name']
+                                    }})
+                        for function in functionlist['functions']:
+                            if channel in functionlist['functions'][function]['channels']:
+                                devicelist['devices'][device].update({'function': {
+                                    'id': function,
+                                    'name': functionlist['functions'][function]['name']
                                     }})
 
     redis_db0.set("devicelist", json.dumps(devicelist))

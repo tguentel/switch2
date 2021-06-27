@@ -39,6 +39,11 @@ def rooms_menu(room_id):
     get_rooms = redis_db0.get('devicelist')
     get_current = redis_db0.get('currentvalues')
 
+    if get_rooms == None or get_current == None:
+        return render_template(
+            'reload.html'
+            )
+
     jr = json.loads(get_rooms)
     jc = json.loads(get_current)
 
@@ -63,7 +68,5 @@ def rooms_menu(room_id):
     return render_template(
         'rooms.html',
         room_data = room_data,
-        page_title = app.config['PAGE_TITLE'],
-        rs_initial_value = app.config['RS_INITIAL_VALUE'],
-        th_initial_value = app.config['TH_INITIAL_VALUE']
+        page_title = app.config['PAGE_TITLE']
         )

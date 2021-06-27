@@ -30,7 +30,7 @@ def produce():
                 "ise_id": ise_id[i],
                 "new_value": new_value[i],
                 }
-        redirect_target = "/room/" + room_id[i]
+        redirect_target = "/obj/" + room_id[i]
         rabbitmq_produce(json.dumps(rmq_data), "switch_command")
 
     return redirect(redirect_target)

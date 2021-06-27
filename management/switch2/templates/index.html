@@ -1,25 +1,29 @@
 {% extends "layout.html" %}
 
-
 {% block content %}
+{{ functions }}
   <table>
     <tr>
       <td>
-        </b>ROOMS</b>
+        <table>
+          <tr><td></b>ROOMS</b></td></tr>
+          <tr><td><hr /></td></tr>
+          {% for room in rooms %}
+          <tr><td><p><a href="/obj/{{ room['id'] }}">{{ room['name'] }}</a></p></td></tr>
+          {% endfor %}
+        </table>
       </td>
-    </tr>
-    <tr>
       <td>
-        <hr>
+        <table>
+          <tr><td></b>GROUPS</b></td></tr>
+          <tr><td><hr /></td></tr>
+          {% for function in functions %}
+          <tr><td><p><a href="/obj/{{ function['id'] }}">{{ function['name'] }}</a></p></td></tr>
+          {% endfor %}
+        </table>
       </td>
     </tr>
-    {% for room in rooms %}
-    <tr>
-      <td>
-        <p><a href="/room/{{ room['id'] }}">{{ room['name'] }}</a></p>
-      </td>
-    </tr>
-  {% endfor %}
+  </table>
 {% endblock %}
 
 {% block footer %}

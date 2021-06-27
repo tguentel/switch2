@@ -49,7 +49,7 @@ def load_data():
         jde = json.loads(str(s.attrib).replace("'",'"'))
         device = jde['ise_id']
         name = jde['name']
-        devicelist['devices'].update({device: {'name': name, 'index': {}}})
+        devicelist['devices'].update({device: {'name': name, 'index': {}, 'room': {}, 'function': []}})
         for c in s:
             jdc = json.loads(str(c.attrib).replace("'",'"'))
             index = jdc['index']
@@ -66,16 +66,16 @@ def load_data():
                         devicelist['devices'][device]['index'][index].update({'datapoint': datapoint})
                         for room in roomlist['rooms']:
                             if channel in roomlist['rooms'][room]['channels']:
-                                devicelist['devices'][device].update({'room': {
+                                devicelist['devices'][device]['room'].update({
                                     'id': room,
                                     'name': roomlist['rooms'][room]['name']
-                                    }})
+                                    })
                         for function in functionlist['functions']:
                             if channel in functionlist['functions'][function]['channels']:
-                                devicelist['devices'][device].update({'function': {
+                                devicelist['devices'][device]['function'].append({
                                     'id': function,
                                     'name': functionlist['functions'][function]['name']
-                                    }})
+                                    })
 
     redis_db0.set("devicelist", json.dumps(devicelist))
 

@@ -11,30 +11,40 @@ from switch2 import redis_db0
 
 @app.route("/")
 def main_menu():
-    get_rooms = redis_db0.get('devicelist')
-    if get_rooms == None:
+    devices = redis_db0.get('devicelist')
+    if devices == None:
         return render_template(
                 'reload.html'
                 )
     else:
-        jr = json.loads(get_rooms)
+        jd = json.loads(devices)
         rooms = []
-        for r in jr['devices']:
-            try:
-                jr['devices'][r]['room']
-            except:
-                pass
-            else:
-                if jr['devices'][r]['room'] not in rooms:
-                    rooms.append(jr['devices'][r]['room'])
+        for r in jd['devices']:
+           if jd['devices'][r]['room'] != {}:
+               if jd['devices'][r]['room'] not in rooms:
+                   rooms.append(jd['devices'][r]['room'])
+
+        functions = []
+        for f in jd['devices']:
+            if jd['devices'][f]['function'] != []:
+                for fd in jd['devices'][f]['function']:
+                    if fd not in functions:
+                        functions.append(fd)
+
+        sys.stdout.write(str(rooms))
+
         rooms = sorted(rooms, key=lambda item: item.get("name"))
+        functions = sorted(functions, key=lambda item: item.get("name"))
+
         return render_template(
                 'index.html',
+
                 rooms = rooms,
+                functions = functions,
                 page_title = app.config['PAGE_TITLE']
                 )
 
-@app.route("/room/<int:room_id>")
+@app.route("/obj/<int:room_id>")
 def rooms_menu(room_id):
     get_rooms = redis_db0.get('devicelist')
     get_current = redis_db0.get('currentvalues')

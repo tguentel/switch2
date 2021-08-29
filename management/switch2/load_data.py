@@ -80,7 +80,7 @@ def load_data():
 
     redis_db0.set("devicelist", json.dumps(devicelist))
 
-    return redirect("/")
+    return "Daten neu geladen\n"
 
 
 def gather_current_values(url):
@@ -118,5 +118,5 @@ def update_states():
 
     redis_db0.set("currentvalues", json.dumps(currentvalues))
 
-    return redirect("/")
+    return "Update ausgeführt\n"
 

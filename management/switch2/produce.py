@@ -8,6 +8,7 @@ from flask import redirect
 from flask import url_for
 from flask import request
 from switch2 import app
+from switch2 import redis_db0
 
 
 def rabbitmq_produce(msg, queue):
@@ -21,16 +22,24 @@ def rabbitmq_produce(msg, queue):
 
 @app.route('/produce', methods=['POST'])
 def produce():
-    ise_id = request.form.getlist('ise_id')
-    room_id = request.form.getlist('room_id')
+    control = request.form.getlist('control')
+    device = request.form.getlist('device')
     new_value = request.form.getlist('new_value')
 
-    for i in range(len(ise_id)):
+    for i in range(len(control)):
         rmq_data = {
-                "ise_id": ise_id[i],
+                "ise_id": control[i],
                 "new_value": new_value[i],
                 }
-        redirect_target = "/obj/" + room_id[i]
         rabbitmq_produce(json.dumps(rmq_data), "switch_command")
 
-    return redirect(redirect_target)
+        get_current = redis_db0.get('currentvalues')
+        if get_current == None:
+            return render_template(
+                'reload.html'
+                )
+        jc = json.loads(get_current)
+        jc['values'].update({device[i]: new_value[i]})
+        redis_db0.set('currentvalues', json.dumps(jc))
+
+    return redirect("/")

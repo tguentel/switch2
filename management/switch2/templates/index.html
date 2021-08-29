@@ -1,30 +1,32 @@
 {% extends "layout.html" %}
 
 {% block content %}
-{{ functions }}
-  <table>
-    <tr>
-      <td>
-        <table>
-          <tr><td></b>ROOMS</b></td></tr>
-          <tr><td><hr /></td></tr>
-          {% for room in rooms %}
-          <tr><td><p><a href="/obj/{{ room['id'] }}">{{ room['name'] }}</a></p></td></tr>
-          {% endfor %}
-        </table>
-      </td>
-      <td>
-        <table>
-          <tr><td></b>GROUPS</b></td></tr>
-          <tr><td><hr /></td></tr>
-          {% for function in functions %}
-          <tr><td><p><a href="/obj/{{ function['id'] }}">{{ function['name'] }}</a></p></td></tr>
-          {% endfor %}
-        </table>
-      </td>
-    </tr>
-  </table>
-{% endblock %}
+<div class="sidenav">
 
-{% block footer %}
+  <button class="dropdown-btn">R&auml;ume
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    {% for room in rooms %}
+    <a href="/obj/{{ room['id'] }}">{{ room['name'] }}</a>
+    {% endfor %}
+  </div>
+
+  <button class="dropdown-btn">Gruppen
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    {% for function in functions %}
+    <a href="/obj/{{ function['id'] }}">{{ function['name'] }}</a>
+    {% endfor %}
+  </div>
+
+  <button class="dropdown-btn">Programme
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+  </div>
+
+</div>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
 {% endblock %}

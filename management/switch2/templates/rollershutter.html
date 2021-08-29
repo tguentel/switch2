@@ -1,22 +1,14 @@
 <form id="produce_rs" action="{{ url_for('produce') }}", method="post">
-  <tr>
-    <td colspan="3">
-      <p><b>Roller Shutter</b></p>
-    </td>
-  </tr>
-  {% for r in room_data -%}
-    {% if "BROLL" in r['model'] -%}
-      {% set name = r['name'] %}
-      {% set device = r['device'] %}
-      {% set room_id = r['room']['id'] %}
-      {% set current = r['current'] %}
-      {% set control = r['index']['4']['datapoint'] %}
+  {% for o in object_data -%}
+    {% if "BROLL" in o['model'] -%}
+      {% set name = o['name'] %}
+      {% set device = o['device'] %}
+      {% set room_id = o['room']['id'] %}
+      {% set current = o['current'] %}
+      {% set control = o['index']['4']['datapoint'] %}
       {% include "rollershutter_detail.html" %}
+      <br>
     {% endif %}
   {% endfor %}
-  <tr>
-    <td colspan="3">
-      <input type="submit" name="submit" value="submit">
-    </td>
-  </tr>
+  {% include "footer.html" %}
 </form>

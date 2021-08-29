@@ -1,70 +1,108 @@
 html, body {
   background-color: #000000;
   font-family: Helvetica,Arial,sans-serif;
-  color: #FFFFFF;
-	margin: 0px;
-  margin-top: 10px;
+  font-size: 20px;
+  width: 99%;
+  color: #818181;
+	margin-top: 10px;
+  marin-left: 1px;
   padding: 0px;
 }
 
 a {
-  color:#FFFFFF;
+  color: #818181;
   text-decoration: none;
 }
 
 a:link {
-  color: #FFFFFF;
+  color: #818181;
   text-decoration: none;
 }
 
 a:visited {
-  color: #FFFFFF;
+  color: #818181;
   text-decoration: none;
 }
 
-a:hover {
-  color: #42dd00;
+a:hover .dropdown-btn:hover {
+  color: #f1f1f1;
   text-decoration: none;
 }
 
 a:active {
-  color: #FFFFFF;
+  color: #818181;
   text-decoration: none;
 }
 
 #cntr   {
-  width: 600px;
-  margin: auto;
-}
-
-input[type="submit"] {
-font-size: medium;
-  display: block;
-  color: #000000;
-  border: 0;
-  width: 75px;
-  height: 25px;
-  margin: 5px;
+  max-width: 380px;
+  /* border: 2px solid red; */
 }
 
 input[type="range"] {
   width: 300px;
 }
 
-td[id="valuefield"] {
-  width: 70px;
+#footer-wrapper, #object-wrapper {
+  width: 98%;
+  overflow: hidden;
+  /* border: 2px solid green; */
 }
 
-#btlong {
-  height: 50px;
-  background-color: #FF0000;
-  width: 300px;
-  margin: 0 auto;
-  margin: 5px;
-  position: relative;
-	color: #000000;
-	text-align: center;
-  line-height: 50px;
-  vertical-align: middle;
+#footer-submit {
+  width: 48%;
+  float: left;
+}
+
+#object-slider {
+  width: 80%;
+  float: left;
+}
+
+#footer-back, #object-value {
+  overflow: hidden;
+  float: right;
+}
+
+.sidenav .object {
+  height: 100%;
+  width: 200px;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a, .dropdown-btn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
   border: none;
+  background: none;
+  width:100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.main {
+  margin-left: 200px;
+  padding: 0px 10px;
+}
+
+.active {
+  color: white;
+}
+
+.dropdown-container {
+  display: none;
+  padding-left: 8px;
+}
+
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
 }

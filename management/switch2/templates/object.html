@@ -3,7 +3,7 @@
 {% block content %}
 {% set show = {'rs': False, 'th': False} -%}
 
-{% for r in room_data -%}
+{% for r in object_data -%}
   {% if "BROLL" in r['model'] %}
     {% if show.update({'rs': True}) %}{% endif %}
   {% endif %}
@@ -13,9 +13,6 @@
   {% endif %}
 {% endfor -%}
 
-{{ room_data }}
-<table>
-
   {% if show.rs == True -%}
     {% include "rollershutter.html" %}
   {% endif %}
@@ -24,9 +21,8 @@
     {% include "thermostat.html" %}
   {% endif %}
 
-</table>
 {% endblock %}
 
 {% block footer %}
-  <p><a href="/">back</a></p>
+  {% include "footer.html" %}
 {% endblock %}

@@ -5,6 +5,7 @@ import requests
 import xml.etree.ElementTree as ET
 
 from flask import redirect
+from flask import render_template
 
 from switch2 import app
 from switch2 import redis_db0

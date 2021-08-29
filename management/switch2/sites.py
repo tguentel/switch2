@@ -31,52 +31,60 @@ def main_menu():
                     if fd not in functions:
                         functions.append(fd)
 
-        sys.stdout.write(str(rooms))
-
         rooms = sorted(rooms, key=lambda item: item.get("name"))
         functions = sorted(functions, key=lambda item: item.get("name"))
 
         return render_template(
                 'index.html',
-
                 rooms = rooms,
                 functions = functions,
                 page_title = app.config['PAGE_TITLE']
                 )
 
-@app.route("/obj/<int:room_id>")
-def rooms_menu(room_id):
-    get_rooms = redis_db0.get('devicelist')
+@app.route("/obj/<int:object_id>")
+def objects_menu(object_id):
+    get_objects = redis_db0.get('devicelist')
     get_current = redis_db0.get('currentvalues')
 
-    if get_rooms == None or get_current == None:
+    if get_objects == None or get_current == None:
         return render_template(
             'reload.html'
             )
 
-    jr = json.loads(get_rooms)
+    jo = json.loads(get_objects)
     jc = json.loads(get_current)
 
-    room_data = []
-    for r in jr['devices']:
+    object_data = []
+    for o in jo['devices']:
         try:
-            jr['devices'][r]['room']['id']
+            jo['devices'][o]['room']['id']
         except:
             pass
         else:
-            if int(jr['devices'][r]['room']['id']) == room_id:
+            if int(jo['devices'][o]['room']['id']) == object_id:
                 try:
-                    jc['values'][r]
+                    jc['values'][o]
                 except:
                     pass
                 else:
-                    current = jc['values'][r]
-                    jr['devices'][r].update({'current': current })
-                    jr['devices'][r].update({'device': r })
-                    room_data.append(jr['devices'][r])
+                    current = jc['values'][o]
+                    jo['devices'][o].update({'current': current })
+                    jo['devices'][o].update({'device': o })
+                    object_data.append(jo['devices'][o])
+            for of in jo['devices'][o]['function']:
+                if int(of['id']) == object_id:
+                    try:
+                        jc['values'][o]
+                    except:
+                        pass
+                    else:
+                        current = jc['values'][o]
+                        jo['devices'][o].update({'current': current })
+                        jo['devices'][o].update({'device': o })
+                        object_data.append(jo['devices'][o])
 
     return render_template(
-        'rooms.html',
-        room_data = room_data,
+        'object.html',
+        object_data = object_data,
         page_title = app.config['PAGE_TITLE']
         )

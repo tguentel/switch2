@@ -5,6 +5,8 @@ import json
 import requests
 import sys
 
+from time import sleep
+
 sys.path.append("/consumer/bin")
 from classes.const import const
 import modules.rabbitmqConnect as rabbitmq
@@ -18,6 +20,7 @@ def declarations():
 def statechange(ise_id, new_value):
     url = "%s%s%s/statechange.cgi?ise_id=%s&new_value=%s" % (const.ccu_proto, const.ccu_addr, const.ccu_res, ise_id, new_value)
     r = requests.get(url)
+    sleep(1)
 
 def consume(ch, method, properties, body):
     msg = json.loads(body)
@@ -26,6 +29,7 @@ def consume(ch, method, properties, body):
 
 def main():
     declarations()
+    rabbitmq.channel.basic_qos(prefetch_count=1)
     rabbitmq.channel.basic_consume(queue_name, on_message_callback=consume)
     rabbitmq.channel.start_consuming()
     rabbitmq.connection.close()

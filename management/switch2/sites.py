@@ -13,9 +13,8 @@ from switch2 import redis_db0
 def main_menu():
     devices = redis_db0.get('devicelist')
     if devices == None:
-        return render_template(
-                'reload.html'
-                )
+        return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
+
     else:
         jd = json.loads(devices)
         rooms = []
@@ -47,9 +46,7 @@ def objects_menu(object_id):
     get_current = redis_db0.get('currentvalues')
 
     if get_objects == None or get_current == None:
-        return render_template(
-            'reload.html'
-            )
+        return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
 
     jo = json.loads(get_objects)
     jc = json.loads(get_current)

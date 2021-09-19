@@ -35,9 +35,8 @@ def produce():
 
         get_current = redis_db0.get('currentvalues')
         if get_current == None:
-            return render_template(
-                'reload.html'
-                )
+            return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
+
         jc = json.loads(get_current)
         jc['values'].update({device[i]: new_value[i]})
         redis_db0.set('currentvalues', json.dumps(jc))

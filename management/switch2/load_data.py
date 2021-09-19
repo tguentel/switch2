@@ -100,9 +100,8 @@ def update_states():
     currentvalues = {'values': {}}
 
     if devices == None:
-        return render_template(
-            'reload.html'
-            )
+        return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
+
     else:
         jde = json.loads(devices)
         for d in jde['devices']:

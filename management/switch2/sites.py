@@ -18,10 +18,22 @@ def main_menu():
     else:
         jd = json.loads(devices)
         rooms = []
+        rooms_rs = []
+        rooms_th = []
         for r in jd['devices']:
-           if jd['devices'][r]['room'] != {}:
-               if jd['devices'][r]['room'] not in rooms:
-                   rooms.append(jd['devices'][r]['room'])
+            if jd['devices'][r]['room'] != {}:
+                if jd['devices'][r]['model'] == "HmIP-BWTH" or jd['devices'][r]['model'] == "HmIP-WTH-2":
+                    rooms_th.append(jd['devices'][r]['room'])
+                else:
+                    rooms_rs.append(jd['devices'][r]['room'])
+        for eth in rooms_th:
+            if eth not in rooms_rs:
+                eth.update({'navstart': 'th'})
+                rooms.append(eth)
+        for ers in rooms_rs:
+            ers.update({'navstart': 'rs'})
+            if ers not in rooms:
+                rooms.append(ers)
 
         functions = []
         for f in jd['devices']:
@@ -40,14 +52,15 @@ def main_menu():
                 page_title = app.config['PAGE_TITLE']
                 )
 
-@app.route("/obj/<int:object_id>/<path:category>")
-@app.route("/obj/<int:object_id>", defaults={"category": "rs"})
+@app.route("/obj/<int:object_id>/<string:category>/")
 def objects_menu(object_id, category):
     get_objects = redis_db0.get('devicelist')
     get_current = redis_db0.get('currentvalues')
 
-    if get_objects == None or get_current == None:
+    if get_objects == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
+    elif get_current == None:
+        return "Keine Ger&auml;tedaten gefunden. <a href='/update'>Update ausf&uuml;hren.</a>"
 
     jo = json.loads(get_objects)
     jc = json.loads(get_current)

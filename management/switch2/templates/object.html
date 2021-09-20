@@ -1,27 +1,13 @@
 {% extends "layout.html" %}
 
 {% block content %}
-{% set show = {'rs': False, 'th': False} -%}
-
-{% for r in object_data -%}
-  {% if "BROLL" in r['model'] %}
-    {% if show.update({'rs': True}) %}{% endif %}
-  {% endif %}
-
-  {% if "BWTH" in r['model'] %}
-  {% if show.update({'th': True}) %}{% endif %}
-  {% endif %}
-{% endfor -%}
 
   {% include "navigation.html" -%}
+
   {% if category == "rs" -%}
-    {% include "rollershutter.html" %}
+      {% include "rollershutter.html" %}
   {% elif category == "th" -%}
     {% include "thermostat.html" %}
   {% endif %}
 
-{% endblock %}
-
-{% block footer %}
-  {% include "footer.html" %}
 {% endblock %}

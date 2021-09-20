@@ -34,24 +34,27 @@ a:active {
   text-decoration: none;
 }
 
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #818181;
+    margin: 1em 0;
+    padding: 0;
+}
+
 #cntr   {
   max-width: 380px;
-  /* border: 2px solid red; */
 }
 
 input[type="range"] {
   width: 300px;
 }
 
-#footer-wrapper, #object-wrapper {
+#footer-wrapper, #object-wrapper, #navigation-wrapper {
   width: 98%;
+  margin-top: 10px;
   overflow: hidden;
-  /* border: 2px solid green; */
-}
-
-#footer-submit {
-  width: 48%;
-  float: left;
 }
 
 #footer-action {
@@ -65,15 +68,14 @@ input[type="range"] {
   float: left;
 }
 
-#footer-back, #object-value {
+#object-value {
   overflow: hidden;
   float: right;
 }
 
 #navigation {
-  width:98%;
-  float: left;
-  margin-bottom: 10px;
+  margin-right: 10px;
+  display: inline;
 }
 
 .sidenav .object {

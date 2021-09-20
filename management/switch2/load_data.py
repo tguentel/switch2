@@ -4,7 +4,6 @@ import json
 import requests
 import xml.etree.ElementTree as ET
 
-from flask import redirect
 from flask import render_template
 
 from switch2 import app
@@ -111,9 +110,12 @@ def update_states():
                 pass
             else:
                 if jde['devices'][d]['model'] == "HmIP-BROLL":
-                    datapoint = jde['devices'][d]['index']['3']['datapoint']
-                    value = gather_current_values(state_url % datapoint)
-                    currentvalues['values'].update({d: value })
+                    index = "3"
+                elif jde['devices'][d]['model'] == "HmIP-BWTH" or jde['devices'][d]['model'] == "HmIP-WTH-2":
+                    index = "1"
+                datapoint = jde['devices'][d]['index'][index]['datapoint']
+                value = gather_current_values(state_url % datapoint)
+                currentvalues['values'].update({d: value })
 
     redis_db0.set("currentvalues", json.dumps(currentvalues))
 

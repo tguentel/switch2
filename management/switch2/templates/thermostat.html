@@ -1,17 +1,13 @@
 <form id="produce_th" action="{{ url_for('produce') }}", method="post">
-  <tr>
-    <td colspan="3">
-      <p><b>Thermostat</b></p>
-    </td>
-  </tr>
-  {% for r in room_data[2] -%}
-    {% if "th" in r.id -%}
+  {% for o in object_data -%}
+    {% if "BWTH" in o['model'] or "WTH-2" in o['model'] -%}
+      {% set name = o['name'] %}
+      {% set device = o['device'] %}
+      {% set room_id = o['room']['id'] %}
+      {% set current = o['current'] %}
+      {% set control = o['index']['1']['datapoint'] %}
       {% include "thermostat_detail.html" %}
     {% endif %}
   {% endfor %}
-  <tr>
-    <td colspan="3">
-      <input type="submit" name="submit" value="submit">
-    </td>
-  </tr>
+  {% include "thermostat_footer.html" %}
 </form>

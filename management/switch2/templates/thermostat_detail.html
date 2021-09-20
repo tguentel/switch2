@@ -1,14 +1,14 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/slider_value.js') }}"></script>
-<tr>
-  <td colspan="3">
-    {{ r.desc }}
-  </td>
-  <td>
-    <input type="hidden" name="id" value="{{ r.id }}">
-    <input type="hidden" name="ise_id" value="{{ r.ise_id }}">
-    <input type="hidden" name="room_id" value="{{ room_data[0] }}">
-    <input type="range" name="new_value" value="{{ th_initial_value }}" list="{{ r.id }}_tickmarks" min="13.0" max="26.0" step="1" oninput="th_slider_value(this.value, '{{ r.id }}')">
-    <datalist id="{{ r.id }}_tickmarks">
+
+<div id="object">
+    {{ name }}
+</div>
+<div id="object-wrapper">
+  <div id="object-slider">
+    <input type="hidden" name="control" value="{{ control }}">
+    <input type="hidden" name="device" value="{{ device }}">
+    <input type="range" name="new_value" id="range_new_value_{{ device }}" value="{{ current }}" list="{{ device }}_tickmarks" min="13.0" max="26.0" step="1" oninput="th_slider_value(this.value, '{{ device }}')">
+    <datalist id="{{ device }}_tickmarks">
       <option value="13.0"></option>
       <option value="14.0"></option>
       <option value="15.0"></option>
@@ -24,8 +24,8 @@
       <option value="25.0"></option>
       <option value="26.0"></option>
     </datalist>
-  </td>
-  <td width="50px">
-    <span id="{{ r.id }}_slider">{{ th_initial_value }}</span> °C
-  </td>
-</tr>
+  </div>
+  <div id="object-value">
+    <span id="{{ device }}_slider">{{ current }}</span> °C
+  </div>
+</div>

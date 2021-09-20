@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
 <div class="sidenav">
 
   <button class="dropdown-btn">R&auml;ume
@@ -8,7 +9,7 @@
   </button>
   <div class="dropdown-container">
     {% for room in rooms %}
-    <a href="/obj/{{ room['id'] }}">{{ room['name'] }}</a>
+    <a href="/obj/{{ room['id'] }}/{{ room['navstart'] }}/">{{ room['name'] }}</a>
     {% endfor %}
   </div>
 

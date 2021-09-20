@@ -1,6 +1,41 @@
-<div id="navigation">
-  <a href="/obj/{{ object_id }}/rs">RS</a>
-  <a href="/obj/{{ object_id }}/th">TH</a>
-  <a href="/obj/{{ object_id }}/po">PO</a>
-  <a href="/">MM</a>
+{% set show = {'rs': False, 'th': False} -%}
+
+{% for r in object_data -%}
+  {% if "HmIP-BROLL" in r['model'] %}
+    {% if show.update({'rs': True}) %}{% endif %}
+  {% endif %}
+
+  {% if "HmIP-BWTH" in r['model']  or "HmIP-WTH-2" in r['model']%}
+    {% if show.update({'th': True}) %}{% endif %}
+  {% endif %}
+{% endfor -%}
+
+<div id="navigation-wrapper">
+
+  {% if show.rs == True %}
+  <div id="navigation">
+    <a href="/obj/{{ object_id }}/rs/"><img src="{{ url_for('static', filename='img/window.png') }}"></a>
+  </div>
+  {% endif %}
+
+  {% if show.th == True %}
+  <div id="navigation">
+    <a href="/obj/{{ object_id }}/th/"><img src="{{ url_for('static', filename='img/heizung.png') }}"></a>
+  </div>
+  {% endif %}
+
+  <div id="navigation">
+    <a href="/"><img src="{{ url_for('static', filename='img/menu.png') }}"></a>
+  </div>
+
+  {% if category == "rs" %}
+  {% set produce = "produce_rs" %}
+  {% elif category == "th" %}
+  {% set produce = "produce_th" %}
+  {% endif %}
+  <div id="navigation">
+    <a href="javascript:{}" onclick="document.getElementById('{{ produce }}').submit(); return false;"><img src="{{ url_for('static', filename='img/check.png') }}"></a>
+  </div>
+
 </div>
+<hr />

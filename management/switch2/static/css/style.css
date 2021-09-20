@@ -70,6 +70,12 @@ input[type="range"] {
   float: right;
 }
 
+#navigation {
+  width:98%;
+  float: left;
+  margin-bottom: 10px;
+}
+
 .sidenav .object {
   height: 100%;
   width: 200px;

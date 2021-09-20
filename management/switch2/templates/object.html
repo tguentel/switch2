@@ -13,11 +13,10 @@
   {% endif %}
 {% endfor -%}
 
-  {% if show.rs == True -%}
+  {% include "navigation.html" -%}
+  {% if category == "rs" -%}
     {% include "rollershutter.html" %}
-  {% endif %}
-
-  {% if show.th == True -%}
+  {% elif category == "th" -%}
     {% include "thermostat.html" %}
   {% endif %}
 

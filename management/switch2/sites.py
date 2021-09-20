@@ -40,8 +40,9 @@ def main_menu():
                 page_title = app.config['PAGE_TITLE']
                 )
 
-@app.route("/obj/<int:object_id>")
-def objects_menu(object_id):
+@app.route("/obj/<int:object_id>/<path:category>")
+@app.route("/obj/<int:object_id>", defaults={"category": "rs"})
+def objects_menu(object_id, category):
     get_objects = redis_db0.get('devicelist')
     get_current = redis_db0.get('currentvalues')
 
@@ -83,5 +84,7 @@ def objects_menu(object_id):
     return render_template(
         'object.html',
         object_data = object_data,
+        object_id = object_id,
+        category = category,
         page_title = app.config['PAGE_TITLE']
         )

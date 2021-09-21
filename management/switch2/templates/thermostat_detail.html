@@ -26,6 +26,6 @@
     </datalist>
   </div>
   <div id="object-value">
-    <span id="{{ device }}_slider">{{ current }}</span> °C
+    <span id="{{ device }}_slider">{{ (current|float * 1)|int }}</span> °C
   </div>
 </div>

@@ -18,22 +18,24 @@ def main_menu():
     else:
         jd = json.loads(devices)
         rooms = []
-        rooms_rs = []
-        rooms_th = []
+        seen = []
         for r in jd['devices']:
-            if jd['devices'][r]['room'] != {}:
-                if jd['devices'][r]['model'] == "HmIP-BWTH" or jd['devices'][r]['model'] == "HmIP-WTH-2":
-                    rooms_th.append(jd['devices'][r]['room'])
-                else:
-                    rooms_rs.append(jd['devices'][r]['room'])
-        for eth in rooms_th:
-            if eth not in rooms_rs:
-                eth.update({'navstart': 'th'})
-                rooms.append(eth)
-        for ers in rooms_rs:
-            ers.update({'navstart': 'rs'})
-            if ers not in rooms:
-                rooms.append(ers)
+            room_info = jd['devices'][r]['room']
+            if room_info != {}:
+                room_id = room_info['id']
+                if room_id not in seen:
+                    model = jd['devices'][r]['model']
+                    if model == "hmip-psm" or model == "hmip-fsm":
+                        navstart = "po"
+                    elif model == "hmip-bwth" or model == "hmip-wth-2":
+                        navstart = "th"
+                    elif model == "hmip-broll":
+                        navstart = "rs"
+                    else:
+                        navstart = "na"
+                    room_info.update({'navstart': navstart})
+                    rooms.append(room_info)
+                seen.append(room_id)
 
         functions = []
         for f in jd['devices']:
@@ -47,6 +49,7 @@ def main_menu():
 
         return render_template(
                 'index.html',
+                seen = seen,
                 rooms = rooms,
                 functions = functions,
                 page_title = app.config['PAGE_TITLE']

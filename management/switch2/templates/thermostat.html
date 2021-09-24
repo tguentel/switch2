@@ -1,6 +1,6 @@
 <form id="produce_th" action="{{ url_for('produce') }}", method="post">
   {% for o in object_data -%}
-    {% if "BWTH" in o['model'] or "WTH-2" in o['model'] -%}
+    {% if "hmip-bwth" in o['model'] or "hmip-wth-2" in o['model'] -%}
       {% set name = o['name'] %}
       {% set device = o['device'] %}
       {% set room_id = o['room']['id'] %}

@@ -1,13 +1,19 @@
-{% set show = {'rs': False, 'th': False} -%}
+{% set show = {'rs': False, 'th': False, 'po': False} -%}
 
 {% for r in object_data -%}
-  {% if "HmIP-BROLL" in r['model'] %}
+
+  {% if "hmip-broll" in r['model'] %}
     {% if show.update({'rs': True}) %}{% endif %}
   {% endif %}
 
-  {% if "HmIP-BWTH" in r['model']  or "HmIP-WTH-2" in r['model']%}
+  {% if "hmip-bwth" in r['model'] or "hmip-wth-2" in r['model']%}
     {% if show.update({'th': True}) %}{% endif %}
   {% endif %}
+
+  {% if "hmip-fsm" in r['model'] or "hmip-psm" in r['model']%}
+    {% if show.update({'po': True}) %}{% endif %}
+  {% endif %}
+
 {% endfor -%}
 
 <div id="navigation-wrapper">
@@ -24,17 +30,18 @@
   </div>
   {% endif %}
 
+  {% if show.po == True %}
+  <div id="navigation">
+    <a href="/obj/{{ object_id }}/po/"><img src="{{ url_for('static', filename='img/power.png') }}"></a>
+  </div>
+  {% endif %}
+
   <div id="navigation">
     <a href="/"><img src="{{ url_for('static', filename='img/menu.png') }}"></a>
   </div>
 
-  {% if category == "rs" %}
-  {% set produce = "produce_rs" %}
-  {% elif category == "th" %}
-  {% set produce = "produce_th" %}
-  {% endif %}
   <div id="navigation">
-    <a href="javascript:{}" onclick="document.getElementById('{{ produce }}').submit(); return false;"><img src="{{ url_for('static', filename='img/check.png') }}"></a>
+    <a href="javascript:{}" onclick="document.getElementById('produce_{{ category }}').submit(); return false;"><img src="{{ url_for('static', filename='img/check.png') }}"></a>
   </div>
 
 </div>

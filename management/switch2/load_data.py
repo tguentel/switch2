@@ -55,8 +55,8 @@ def load_data():
             index = jdc['index']
             channel = jdc['ise_id']
             model = jdc['name'].split(' ')[0]
-            if model in app.config['HMIP_API_DEVICES']:
-                devicelist['devices'][device].update({'model': model})
+            if model.lower() in app.config['HMIP_API_DEVICES']:
+                devicelist['devices'][device].update({'model': model.lower()})
                 for d in c:
                     jda = json.loads(str(d.attrib).replace("'",'"'))
                     datapoint = jda['ise_id']
@@ -90,7 +90,12 @@ def gather_current_values(url):
         jda = json.loads(str(s.attrib).replace("'",'"'))
         value = jda['value']
 
-    return str(round(float(value), 2))
+    try:
+        float(value)
+    except:
+        return str(value)
+    else:
+        return str(round(float(value), 2))
 
 @app.route("/update")
 def update_states():
@@ -109,10 +114,12 @@ def update_states():
             except:
                 pass
             else:
-                if jde['devices'][d]['model'] == "HmIP-BROLL":
+                if jde['devices'][d]['model'] == "hmip-broll":
                     index = "3"
-                elif jde['devices'][d]['model'] == "HmIP-BWTH" or jde['devices'][d]['model'] == "HmIP-WTH-2":
+                elif jde['devices'][d]['model'] == "hmip-bwth" or jde['devices'][d]['model'] == "hmip-wth-2":
                     index = "1"
+                elif jde['devices'][d]['model'] == "hmip-psm" or jde['devices'][d]['model'] == "hmip-fsm":
+                    index = "2"
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
                 currentvalues['values'].update({d: value })

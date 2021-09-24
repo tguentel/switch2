@@ -18,7 +18,7 @@
   </button>
   <div class="dropdown-container">
     {% for function in functions %}
-    <a href="/obj/{{ function['id'] }}">{{ function['name'] }}</a>
+    <a href="/obj/{{ function['id'] }}/{{ function['navstart'] }}/">{{ function['name'] }}</a>
     {% endfor %}
   </div>
 

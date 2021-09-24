@@ -9,6 +9,17 @@ from switch2 import app
 from switch2 import redis_db0
 
 
+def get_navstart(model):
+    if model == "hmip-psm" or model == "hmip-fsm":
+        navstart = "po"
+    elif model == "hmip-bwth" or model == "hmip-wth-2":
+        navstart = "th"
+    elif model == "hmip-broll":
+        navstart = "rs"
+    else:
+        navstart = "na"
+    return navstart
+
 @app.route("/")
 def main_menu():
     devices = redis_db0.get('devicelist')
@@ -18,38 +29,37 @@ def main_menu():
     else:
         jd = json.loads(devices)
         rooms = []
-        seen = []
+        r_seen = []
         for r in jd['devices']:
             room_info = jd['devices'][r]['room']
             if room_info != {}:
                 room_id = room_info['id']
-                if room_id not in seen:
+                if room_id not in r_seen:
                     model = jd['devices'][r]['model']
-                    if model == "hmip-psm" or model == "hmip-fsm":
-                        navstart = "po"
-                    elif model == "hmip-bwth" or model == "hmip-wth-2":
-                        navstart = "th"
-                    elif model == "hmip-broll":
-                        navstart = "rs"
-                    else:
-                        navstart = "na"
+                    navstart = get_navstart(model)
                     room_info.update({'navstart': navstart})
                     rooms.append(room_info)
-                seen.append(room_id)
+                r_seen.append(room_id)
 
+        f_seen = []
         functions = []
-        for f in jd['devices']:
-            if jd['devices'][f]['function'] != []:
-                for fd in jd['devices'][f]['function']:
-                    if fd not in functions:
-                        functions.append(fd)
+        for d in jd['devices']:
+            function_all = jd['devices'][d]['function']
+            if function_all != []:
+                for f in function_all:
+                    function_id = f['id']
+                    if function_id not in f_seen:
+                        model = jd['devices'][d]['model']
+                        navstart = get_navstart(model)
+                        f.update({'navstart': navstart})
+                        functions.append(f)
+                    f_seen.append(function_id)
 
         rooms = sorted(rooms, key=lambda item: item.get("name"))
         functions = sorted(functions, key=lambda item: item.get("name"))
 
         return render_template(
                 'index.html',
-                seen = seen,
                 rooms = rooms,
                 functions = functions,
                 page_title = app.config['PAGE_TITLE']

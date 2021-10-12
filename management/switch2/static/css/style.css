@@ -74,9 +74,15 @@ input[type="range"] {
   float: right;
 }
 
-#navigation {
+#navigation-object {
   margin-right: 10px;
   display: inline;
+}
+
+#navigation-main {
+  display: inline;
+  margin-left: 10px;
+  float: right
 }
 
 .sidenav .object {

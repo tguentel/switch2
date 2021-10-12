@@ -19,29 +19,29 @@
 <div id="navigation-wrapper">
 
   {% if show.rs == True %}
-  <div id="navigation">
+  <div id="navigation-object">
     <a href="/obj/{{ object_id }}/rs/"><img src="{{ url_for('static', filename='img/window.png') }}"></a>
   </div>
   {% endif %}
 
   {% if show.th == True %}
-  <div id="navigation">
+  <div id="navigation-object">
     <a href="/obj/{{ object_id }}/th/"><img src="{{ url_for('static', filename='img/heizung.png') }}"></a>
   </div>
   {% endif %}
 
   {% if show.po == True %}
-  <div id="navigation">
+  <div id="navigation-object">
     <a href="/obj/{{ object_id }}/po/"><img src="{{ url_for('static', filename='img/power.png') }}"></a>
   </div>
   {% endif %}
 
-  <div id="navigation">
-    <a href="/"><img src="{{ url_for('static', filename='img/menu.png') }}"></a>
+  <div id="navigation-main">
+    <a href="javascript:{}" onclick="document.getElementById('produce_{{ category }}').submit(); return false;"><img src="{{ url_for('static', filename='img/check.png') }}"></a>
   </div>
 
-  <div id="navigation">
-    <a href="javascript:{}" onclick="document.getElementById('produce_{{ category }}').submit(); return false;"><img src="{{ url_for('static', filename='img/check.png') }}"></a>
+  <div id="navigation-main">
+    <a href="/"><img src="{{ url_for('static', filename='img/menu.png') }}"></a>
   </div>
 
 </div>

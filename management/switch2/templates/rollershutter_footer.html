@@ -3,9 +3,22 @@
 <div id="footer-wrapper">
   <hr />
   <div id="footer-action">
-    <p><a href="javascript:{}" onclick="rs_action('1.0');">Ge&ouml;ffnet</a></p>
-    <p><a href="javascript:{}" onclick="rs_action('0.0');">Geschlossen</a></p>
-    <p><a href="javascript:{}" onclick="rs_action('0.2');">Privatsph&auml;re</a></p>
-    <p><a href="javascript:{}" onclick="rs_action('0.6');">Sonnenschutz</a></p>
+
+    <div id="navigation-object">
+      <a href="javascript:{}" onclick="rs_action('1.0');"><img src="{{ url_for('static', filename='img/up-arrow.png') }}"></a>
+    </div>
+
+    <div id="navigation-object">
+      <a href="javascript:{}" onclick="rs_action('0.6');"><img src="{{ url_for('static', filename='img/sunglasses.png') }}"></a>
+    </div>
+
+    <div id="navigation-object">
+      <a href="javascript:{}" onclick="rs_action('0.2');"><img src="{{ url_for('static', filename='img/visibility.png') }}"></a>
+    </div>
+
+    <div id="navigation-object">
+      <a href="javascript:{}" onclick="rs_action('0.0');"><img src="{{ url_for('static', filename='img/down-arrow.png') }}"></a>
+    </div>
+
   </div>
 </div>

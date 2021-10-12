@@ -1,11 +1,16 @@
 <form id="produce_po" action="{{ url_for('produce') }}", method="post">
   {% for o in object_data -%}
     {% if "hmip-fsm" in o['model'] or "hmip-psm" in o['model'] -%}
+      {% if "hmip-fsm" in o['model'] %}
+        {% set index = "2" %}
+      {% elif "hmip-psm" in o['model'] %}
+        {% set index = "3" %}
+      {% endif %}
       {% set name = o['name'] %}
       {% set device = o['device'] %}
       {% set room_id = o['room']['id'] %}
       {% set current = o['current'] %}
-      {% set control = o['index']['3']['datapoint'] %}
+      {% set control = o['index'][index]['datapoint'] %}
       {% include "poweroutlet_detail.html" %}
     {% endif %}
   {% endfor %}

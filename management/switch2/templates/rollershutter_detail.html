@@ -6,7 +6,7 @@
   <div id="object-slider">
     <input type="hidden" name="control" value="{{ control }}">
     <input type="hidden" name="device" value="{{ device }}">
-    <input type="range" name="new_value" id="range_new_value_{{ device }}" value="{{ current }}" list="{{ device }}_tickmarks" min="0" max="1" step="0.1" oninput="rs_slider_value(this.value, '{{ device }}')">
+    <input type="range" name="new_value_{{ device }}" id="range_new_value_{{ device }}" value="{{ current }}" list="{{ device }}_tickmarks" min="0" max="1" step="0.1" oninput="rs_slider_value(this.value, '{{ device }}')">
     <datalist id="{{ device }}_tickmarks">
       <option value="0.0"></option>
       <option value="0.1"></option>

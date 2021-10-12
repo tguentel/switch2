@@ -24,12 +24,12 @@ def rabbitmq_produce(msg, queue):
 def produce():
     control = request.form.getlist('control')
     device = request.form.getlist('device')
-    new_value = request.form.getlist('new_value')
 
     for i in range(len(control)):
+        new_value = request.form.getlist('new_value_' + device[i])
         rmq_data = {
                 "ise_id": control[i],
-                "new_value": new_value[i],
+                "new_value": new_value[0],
                 }
         rabbitmq_produce(json.dumps(rmq_data), "switch_command")
 
@@ -38,7 +38,7 @@ def produce():
             return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
 
         jc = json.loads(get_current)
-        jc['values'].update({device[i]: new_value[i]})
+        jc['values'].update({device[i]: new_value[0]})
         redis_db0.set('currentvalues', json.dumps(jc))
 
     return redirect("/")

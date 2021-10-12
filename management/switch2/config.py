@@ -13,3 +13,7 @@ HMIP_API_ROOMLIST = "roomlist.cgi"
 HMIP_API_STATELIST = "statelist.cgi"
 HMIP_API_FUNCTIONLIST = "functionlist.cgi"
 HMIP_API_STATE = "state.cgi"
+
+MHIP_MODEL_PO = ["hmip-psm", "hmip-fsm"]
+MHIP_MODEL_TH = ["hmip-wth-2", "hmip-bwth"]
+MHIP_MODEL_RS = ["hmip-broll"]

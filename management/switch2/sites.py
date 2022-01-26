@@ -40,16 +40,15 @@ def main_menu():
 
         f_seen = []
         functions = []
-        navstart = None
         for d in jd['devices']:
             function_all = jd['devices'][d]['function']
             if function_all != []:
                 for f in function_all:
                     function_id = f['id']
-                    if str(function_id) not in f_seen:
+                    if function_id not in f_seen:
                         f_seen.append(function_id)
                         model = jd['devices'][d]['model']
-                        navstart = get_navstart(room_id)
+                        navstart = get_navstart(function_id)
                         f.update({'navstart': navstart})
                         functions.append(f)
 

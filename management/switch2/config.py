@@ -18,4 +18,4 @@ MHIP_MODEL_PO = ["hmip-psm", "hmip-fsm"]
 MHIP_MODEL_TH = ["hmip-wth-2", "hmip-bwth"]
 MHIP_MODEL_RS = ["hmip-broll"]
 
-NAVSTART_EXCEPTION = { '2180': 'po', '3517': 'th' }
+NAVSTART_EXCEPTION = { '2180': 'po', '3517': 'th', '1215': 'th', '1214': 'po', '1223': 'po' }

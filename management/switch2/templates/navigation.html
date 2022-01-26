@@ -36,6 +36,10 @@
   </div>
   {% endif %}
 
+  <div id="navigation-object">
+    <a href="/obj/{{ object_id }}/ov/"><img src="{{ url_for('static', filename='img/overview.png') }}"></a>
+  </div>
+
   <div id="navigation-main">
     <a href="javascript:{}" onclick="document.getElementById('produce_{{ category }}').submit(); return false;"><img src="{{ url_for('static', filename='img/check.png') }}"></a>
   </div>

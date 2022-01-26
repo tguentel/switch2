@@ -10,6 +10,9 @@
     {% include "thermostat.html" %}
   {% elif category == "po" -%}
     {% include "poweroutlet.html" %}
+  {% elif category == "ov" -%}
+    {% include "overview.html" %}
   {% endif %}
+
 
 {% endblock %}

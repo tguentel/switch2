@@ -1,0 +1,30 @@
+{% for o in object_data -%}
+  {% set name = o['name'] %}
+
+  {% if "hmip-broll" in o['model'] %}
+    {% set title = "Rollladen" %}
+    {% set current = (o['current']|float * 100)|int %}
+    {% set unit = "%" %}
+
+  {% elif "hmip-bwth" in o['model'] or "hmip-wth-2" in o['model'] %}
+    {% set title = "Heizung" %}
+    {% set current = o['current'] %}
+    {% set unit = "°C" %}
+
+  {% elif "hmip-psm" in o['model'] or "hmip-fsm" in o['model'] %}
+    {% set title = "Schalter" %}
+    {% if o['current'] == "true" %}
+      {% set current = "An" %}
+    {% elif o['current'] == "false" %}
+      {% set current = "Aus" %}
+    {% endif %}
+    {% set unit = "" %}
+
+  {% elif "hmip-fci1" in o['model'] or "hmip-swdo" in o['model'] or "hmip-srh" in o['model'] %}
+    {% set title = "Fenster/Tür" %}
+    {% set current = o['current'] %}
+    {% set unit = "" %}
+
+  {% endif %}
+  {% include "overview_detail.html" %}
+{% endfor %}

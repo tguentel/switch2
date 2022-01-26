@@ -9,15 +9,11 @@ from switch2 import app
 from switch2 import redis_db0
 
 
-def get_navstart(model):
-    if model == "hmip-psm" or model == "hmip-fsm":
-        navstart = "po"
-    elif model == "hmip-bwth" or model == "hmip-wth-2":
-        navstart = "th"
-    elif model == "hmip-broll":
-        navstart = "rs"
+def get_navstart(room_id):
+    if room_id in app.config['NAVSTART_EXCEPTION']:
+        navstart = app.config['NAVSTART_EXCEPTION'][room_id]
     else:
-        navstart = "na"
+        navstart = "rs"
     return navstart
 
 @app.route("/")
@@ -30,30 +26,32 @@ def main_menu():
         jd = json.loads(devices)
         rooms = []
         r_seen = []
+        navstart = None
         for r in jd['devices']:
             room_info = jd['devices'][r]['room']
             if room_info != {}:
                 room_id = room_info['id']
                 if room_id not in r_seen:
+                    r_seen.append(room_id)
                     model = jd['devices'][r]['model']
-                    navstart = get_navstart(model)
+                    navstart = get_navstart(room_id)
                     room_info.update({'navstart': navstart})
                     rooms.append(room_info)
-                r_seen.append(room_id)
 
         f_seen = []
         functions = []
+        navstart = None
         for d in jd['devices']:
             function_all = jd['devices'][d]['function']
             if function_all != []:
                 for f in function_all:
                     function_id = f['id']
-                    if function_id not in f_seen:
+                    if str(function_id) not in f_seen:
+                        f_seen.append(function_id)
                         model = jd['devices'][d]['model']
-                        navstart = get_navstart(model)
+                        navstart = get_navstart(room_id)
                         f.update({'navstart': navstart})
                         functions.append(f)
-                    f_seen.append(function_id)
 
         rooms = sorted(rooms, key=lambda item: item.get("name"))
         functions = sorted(functions, key=lambda item: item.get("name"))

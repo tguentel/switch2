@@ -26,20 +26,26 @@ def produce():
     device = request.form.getlist('device')
 
     for i in range(len(control)):
-        new_value = request.form.getlist('new_value_' + device[i])
-        rmq_data = {
-                "ise_id": control[i],
-                "new_value": new_value[0],
-                }
-        rabbitmq_produce(json.dumps(rmq_data), "switch_command")
-        rabbitmq_produce(json.dumps(rmq_data), "control_loop_delay")
-
         get_current = redis_db0.get('currentvalues')
         if get_current == None:
             return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
 
         jc = json.loads(get_current)
-        jc['values'].update({device[i]: new_value[0]})
-        redis_db0.set('currentvalues', json.dumps(jc))
+
+        ise_id = control[i]
+        new_value = request.form.getlist('new_value_' + device[i])[0]
+        old_value = jc['values'][device[i]]
+
+        if new_value != old_value:
+            rmq_data = {
+                    "ise_id": ise_id,
+                    "new_value": new_value,
+                    "old_value": old_value
+                    }
+            rabbitmq_produce(json.dumps(rmq_data), "switch_command")
+            rabbitmq_produce(json.dumps(rmq_data), "control_loop_delay")
+
+            jc['values'].update({device[i]: new_value[0]})
+            redis_db0.set('currentvalues', json.dumps(jc))
 
     return redirect(request.referrer)

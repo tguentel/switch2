@@ -31,6 +31,14 @@ services:
     networks:
       - network
 
+  switch2-consumer-cl:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile.control-loop
+    restart: always
+    networks:
+      - network
+
   switch2-scheduler:
     build:
       context: ./scheduler

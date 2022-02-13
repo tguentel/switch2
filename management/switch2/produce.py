@@ -42,4 +42,4 @@ def produce():
         jc['values'].update({device[i]: new_value[0]})
         redis_db0.set('currentvalues', json.dumps(jc))
 
-    return redirect("/")
+    return redirect(request.referrer)

@@ -47,21 +47,21 @@ def get_actual_state(ise_id):
     else:
         return str(round(float(value), 2))
 
-def check_value_changes(old_value, new_value, actual_value):
+def check_value_changes(ise_id, old_value, new_value, actual_value):
     retrigger = "false"
     if actual_value == old_value:
-        logger.error("Value of %s has not changed" % old_value)
+        logger.error("ID %s: Value of %s has not changed" % (ise_id, old_value))
         retrigger = "true"
     elif actual_value == new_value:
-        logger.info("New value of %s is in place" % new_value)
+        logger.info("ID %s: New value of %s is in place" % (ise_id, new_value))
     elif actual_value != old_value and actual_value != new_value:
-        logger.info("Old value of %s has changed to %s but new value of %s is not yet in place" %(old_value, actual_value, new_value))
+        logger.info("ID %s: Old value of %s has changed to %s but new value of %s is not yet in place" % (ise_id, old_value, actual_value, new_value))
     else:
-        logger.error("Value check was not successful")
+        logger.error("ID %s: Value check was not successful" % ise_id)
     return retrigger
 
 def retrigger_publish_message(ise_id, old_value, new_value):
-    logger.info("Republish message to reach the disired state")
+    logger.info("ID: %s: Republish message to reach the disired state" % ise_id)
     rmq_data = {
         "ise_id": ise_id,
         "new_value": new_value,
@@ -74,8 +74,8 @@ def retrigger_publish_message(ise_id, old_value, new_value):
 def consume(ch, method, properties, body):
     msg = json.loads(body)
     actual_value = get_actual_state(msg['ise_id'])
-    retrigger = check_value_changes(msg['old_value'], msg['new_value'], actual_value)
-    logger.info("Retrigger: %s" % retrigger)
+    retrigger = check_value_changes(msg['ise_id'], msg['old_value'], msg['new_value'], actual_value)
+    logger.info("ID %s: Retrigger set to %s" % (msg['ise_id'], retrigger))
     if retrigger == "true":
         retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)

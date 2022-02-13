@@ -32,6 +32,7 @@ def produce():
                 "new_value": new_value[0],
                 }
         rabbitmq_produce(json.dumps(rmq_data), "switch_command")
+        rabbitmq_produce(json.dumps(rmq_data), "control_loop_delay")
 
         get_current = redis_db0.get('currentvalues')
         if get_current == None:

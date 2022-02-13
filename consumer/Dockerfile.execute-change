@@ -9,6 +9,8 @@ RUN pip install --no-cache-dir \
   requests
 
 COPY bin /consumer/bin
-COPY scripts/roller-shutter.py /consumer/roller-shutter.py
+COPY scripts/execute-change.py /consumer/execute-change.py
 
-CMD ["python", "/consumer/roller-shutter.py"]
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "-u", "/consumer/execute-change.py"]

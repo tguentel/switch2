@@ -33,14 +33,15 @@ def produce():
         jc = json.loads(get_current)
 
         ise_id = control[i]
-        new_value = request.form.getlist('new_value_' + device[i])[0]
+        new_value = str(float(request.form.getlist('new_value_' + device[i])[0]))
         old_value = jc['values'][device[i]]
 
         if new_value != old_value:
             rmq_data = {
                     "ise_id": ise_id,
                     "new_value": new_value,
-                    "old_value": old_value
+                    "old_value": old_value,
+                    "retriggered": "false"
                     }
             rabbitmq_produce(json.dumps(rmq_data), "switch_command")
             rabbitmq_produce(json.dumps(rmq_data), "control_loop_delay")

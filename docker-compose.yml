@@ -23,10 +23,10 @@ services:
     networks:
       - network
 
-  switch2-consumer-rs:
+  switch2-consumer-ec:
     build:
       context: ./consumer
-      dockerfile: Dockerfile.roller-shutter
+      dockerfile: Dockerfile.execute-change
     restart: always
     networks:
       - network

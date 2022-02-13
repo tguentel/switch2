@@ -3,6 +3,7 @@
 import pika
 import json
 import requests
+import logging
 import sys
 
 from time import sleep
@@ -14,6 +15,13 @@ import modules.rabbitmqConnect as rabbitmq
 
 queue_name = "switch_command"
 
+log_format = "%(levelname)s %(asctime)s - %(message)s"
+logging.basicConfig(stream = sys.stdout,
+                    format = log_format,
+                    level = logging.INFO)
+logger = logging.getLogger()
+
+
 def declarations():
     rabbitmq.channel.queue_declare(queue=queue_name, durable=False)
 
@@ -24,10 +32,13 @@ def statechange(ise_id, new_value):
 
 def consume(ch, method, properties, body):
     msg = json.loads(body)
+    logger.info("Changing state of %s to new value %s" % (msg['ise_id'], msg['new_value']))
+    logger.info("Retriggered: %s" % msg['retriggered'])
     statechange(msg['ise_id'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def main():
+    logger.info("Starting consumer: execute-change")
     declarations()
     rabbitmq.channel.basic_qos(prefetch_count=1)
     rabbitmq.channel.basic_consume(queue_name, on_message_callback=consume)

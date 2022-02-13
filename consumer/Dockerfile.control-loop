@@ -11,4 +11,6 @@ RUN pip install --no-cache-dir \
 COPY bin /consumer/bin
 COPY scripts/control-loop.py /consumer/control-loop.py
 
-CMD ["python", "/consumer/control-loop.py"]
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "-u", "/consumer/control-loop.py"]

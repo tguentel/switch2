@@ -14,6 +14,7 @@ import modules.rabbitmqConnect as rabbitmq
 
 
 queue_name = "switch_command"
+delay_name = "control_loop_delay"
 
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
@@ -25,17 +26,28 @@ logger = logging.getLogger()
 def declarations():
     rabbitmq.channel.queue_declare(queue=queue_name, durable=False)
 
-def statechange(ise_id, new_value):
+def state_change(ise_id, new_value, retriggered):
+    logger.info("Changing state of %s to new value %s" % (ise_id, new_value))
+    logger.info("Retriggered is set to %s" % retriggered)
     url = "%s%s%s/statechange.cgi?ise_id=%s&new_value=%s" % (const.ccu_proto, const.ccu_addr, const.ccu_res, ise_id, new_value)
     r = requests.get(url)
-    sleep(1)
+
+def start_control_loop(ise_id, old_value, new_value):
+    logger.info("ID %s: Start control loop" % ise_id)
+    rmq_data = {
+        "ise_id": ise_id,
+        "new_value": new_value,
+        "old_value": old_value,
+        "retriggered": "false"
+        }
+    rabbitmq.channel.basic_publish(exchange='', routing_key=delay_name, body=json.dumps(rmq_data))
 
 def consume(ch, method, properties, body):
     msg = json.loads(body)
-    logger.info("Changing state of %s to new value %s" % (msg['ise_id'], msg['new_value']))
-    logger.info("Retriggered: %s" % msg['retriggered'])
-    statechange(msg['ise_id'], msg['new_value'])
+    state_change(msg['ise_id'], msg['new_value'], msg['retriggered'])
+    start_control_loop(msg['ise_id'], msg['old_value'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
+    sleep(1)
 
 def main():
     logger.info("Starting consumer: execute-change")

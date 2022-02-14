@@ -44,7 +44,6 @@ def produce():
                     "retriggered": "false"
                     }
             rabbitmq_produce(json.dumps(rmq_data), "switch_command")
-            rabbitmq_produce(json.dumps(rmq_data), "control_loop_delay")
 
             jc['values'].update({device[i]: new_value[0]})
             redis_db0.set('currentvalues', json.dumps(jc))

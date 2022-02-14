@@ -23,18 +23,10 @@ services:
     networks:
       - network
 
-  switch2-consumer-ec:
+  switch2-consumer:
     build:
       context: ./consumer
-      dockerfile: Dockerfile.execute-change
-    restart: always
-    networks:
-      - network
-
-  switch2-consumer-cl:
-    build:
-      context: ./consumer
-      dockerfile: Dockerfile.control-loop
+      dockerfile: Dockerfile
     restart: always
     networks:
       - network

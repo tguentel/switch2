@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-import pika
+import sys
 import json
 import requests
 import logging
 import xml.etree.ElementTree as ET
-import sys
 
 from time import sleep
 
@@ -24,14 +23,6 @@ logging.basicConfig(stream = sys.stdout,
                     level = logging.INFO)
 logger = logging.getLogger()
 
-def declarations():
-    rabbitmq.channel.queue_declare(queue=queue_name, durable=False)
-    rabbitmq.channel.queue_bind(exchange='amq.direct', queue=queue_name)
-    rabbitmq.channel.queue_declare(queue=delay_name, durable=False, arguments={
-        'x-message-ttl': 30000,
-        'x-dead-letter-exchange': 'amq.direct',
-        'x-dead-letter-routing-key': queue_name
-    })
 
 def get_actual_state(ise_id):
     url = "%s%s%s/state.cgi?datapoint_id=%s" % (const.ccu_proto, const.ccu_addr, const.ccu_res, ise_id)
@@ -82,7 +73,6 @@ def consume(ch, method, properties, body):
 
 def main():
     logger.info("Starting consumer: control-loop")
-    declarations()
     rabbitmq.channel.basic_qos(prefetch_count=1)
     rabbitmq.channel.basic_consume(queue_name, on_message_callback=consume)
     rabbitmq.channel.start_consuming()

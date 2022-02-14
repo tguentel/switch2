@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-import pika
+import sys
 import json
 import requests
 import logging
-import sys
 
 from time import sleep
 
@@ -22,9 +21,6 @@ logging.basicConfig(stream = sys.stdout,
                     level = logging.INFO)
 logger = logging.getLogger()
 
-
-def declarations():
-    rabbitmq.channel.queue_declare(queue=queue_name, durable=False)
 
 def state_change(ise_id, new_value, retriggered):
     logger.info("Changing state of %s to new value %s" % (ise_id, new_value))
@@ -51,7 +47,6 @@ def consume(ch, method, properties, body):
 
 def main():
     logger.info("Starting consumer: execute-change")
-    declarations()
     rabbitmq.channel.basic_qos(prefetch_count=1)
     rabbitmq.channel.basic_consume(queue_name, on_message_callback=consume)
     rabbitmq.channel.start_consuming()

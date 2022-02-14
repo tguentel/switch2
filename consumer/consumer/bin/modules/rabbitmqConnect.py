@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pika
 from time import sleep
 from sys import exit

@@ -31,12 +31,18 @@ def get_actual_state(ise_id):
     for s in s_root:
         jda = json.loads(str(s.attrib).replace("'",'"'))
         value = jda['value']
+        if value == "true":
+            nobool = 1.0
+        elif value == "false":
+            nobool = 0.0
+        else:
+            nobool = value
     try:
-        float(value)
+        float(nobool)
     except:
-        return str(value)
+        return str(nobool)
     else:
-        return str(round(float(value), 2))
+        return str(round(float(nobool), 2))
 
 def check_value_changes(ise_id, old_value, new_value, actual_value):
     retrigger = "false"

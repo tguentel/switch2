@@ -3,12 +3,19 @@
 import pika
 import json
 import sys
+import logging
 
 from flask import redirect
 from flask import url_for
 from flask import request
 from switch2 import app
 from switch2 import redis_db0
+
+log_format = "%(levelname)s %(asctime)s - %(message)s"
+logging.basicConfig(stream = sys.stdout,
+                    format = log_format,
+                    level = logging.INFO)
+logger = logging.getLogger()
 
 
 def rabbitmq_produce(msg, queue):
@@ -37,6 +44,8 @@ def produce():
         old_value = jc['values'][device[i]]
 
         if new_value != old_value:
+            logger.info("ID %s: New value %s differs from old value %s" % (ise_id, new_value, old_value))
+            logger.info("ID %s: Producing message" % ise_id)
             rmq_data = {
                     "ise_id": ise_id,
                     "new_value": new_value,
@@ -48,4 +57,7 @@ def produce():
             jc['values'].update({device[i]: new_value[0]})
             redis_db0.set('currentvalues', json.dumps(jc))
 
+        else:
+            logger.info("ID %s: New value %s is the same as the old value" % (ise_id, new_value))
+            logger.info("ID %s: Nothing to do" % ise_id)
     return redirect(request.referrer)

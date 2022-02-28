@@ -124,7 +124,13 @@ def update_states():
                     index = "4"
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
-                currentvalues['values'].update({d: value })
+                if value == "true":
+                    nobool = "1.0"
+                elif value == "false":
+                    nobool == "0.0"
+                else:
+                    nobool = value
+                currentvalues['values'].update({d: nobool })
 
     redis_db0.set("currentvalues", json.dumps(currentvalues))
 

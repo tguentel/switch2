@@ -74,7 +74,10 @@ def consume(ch, method, properties, body):
     retrigger = check_value_changes(msg['ise_id'], msg['old_value'], msg['new_value'], actual_value)
     logger.info("ID %s: Retrigger set to %s" % (msg['ise_id'], retrigger))
     if retrigger == "true":
-        retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
+        if msg['retriggered'] == "true":
+            logger.error("ID %s: Message was retriggered before. Giving up.")
+        else:
+            retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def main():

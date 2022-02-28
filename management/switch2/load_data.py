@@ -120,6 +120,8 @@ def update_states():
                     index = "1"
                 elif jde['devices'][d]['model'] == "hmip-psm" or jde['devices'][d]['model'] == "hmip-fsm":
                     index = "2"
+                elif jde['devices'][d]['model'] == "hmip-bsm":
+                    index = "4"
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
                 currentvalues['values'].update({d: value })

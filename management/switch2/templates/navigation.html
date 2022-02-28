@@ -6,11 +6,11 @@
     {% if show.update({'rs': True}) %}{% endif %}
   {% endif %}
 
-  {% if "hmip-bwth" in r['model'] or "hmip-wth-2" in r['model']%}
+  {% if "hmip-bwth" in r['model'] or "hmip-wth-2" in r['model'] %}
     {% if show.update({'th': True}) %}{% endif %}
   {% endif %}
 
-  {% if "hmip-fsm" in r['model'] or "hmip-psm" in r['model']%}
+  {% if "hmip-fsm" in r['model'] or "hmip-psm" in r['model'] or "hmip-bsm" in r['model'] %}
     {% if show.update({'po': True}) %}{% endif %}
   {% endif %}
 

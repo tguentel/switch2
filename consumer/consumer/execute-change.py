@@ -23,8 +23,8 @@ logger = logging.getLogger()
 
 
 def state_change(ise_id, new_value, retriggered):
-    logger.info("Changing state of %s to new value %s" % (ise_id, new_value))
-    logger.info("Retriggered is set to %s" % retriggered)
+    logger.info("ID %s: Changing state to new value %s" % (ise_id, new_value))
+    logger.info("ID %s: Retriggered is set to %s" % (ise_id, retriggered))
     url = "%s%s%s/statechange.cgi?ise_id=%s&new_value=%s" % (const.ccu_proto, const.ccu_addr, const.ccu_res, ise_id, new_value)
     r = requests.get(url)
 

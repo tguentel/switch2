@@ -11,7 +11,7 @@ import modules.rabbitmqConnect as rabbitmq
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
                     format = log_format,
-                    level = logging.INFO)
+                    level = const.loglevel)
 logger = logging.getLogger()
 
 def declare_control_loop(queue_name, durable, ttl, exchange):

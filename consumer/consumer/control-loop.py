@@ -20,7 +20,7 @@ publish_name = "switch_command"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
                     format = log_format,
-                    level = logging.INFO)
+                    level = const.loglevel)
 logger = logging.getLogger()
 
 

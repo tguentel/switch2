@@ -14,7 +14,7 @@ from switch2 import redis_db0
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
                     format = log_format,
-                    level = logging.INFO)
+                    level = app.config['LOGLEVEL'])
 logger = logging.getLogger()
 
 

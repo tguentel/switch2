@@ -4,6 +4,8 @@ PAGE_TITLE = "tangogolf Switch 2"
 
 SEND_FILE_MAX_AGE_DEFAULT = 0
 
+LOGLEVEL = "INFO"
+
 REDIS_URL = "redis://switch2-redis:6379/0"
 
 HMIP_API_DEVICES = ["hmip-broll", "hmip-bwth", "hmip-wth-2", "hmip-psm", "hmip-fsm", "hmip-bsm"]

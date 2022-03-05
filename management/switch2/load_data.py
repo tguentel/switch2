@@ -3,11 +3,20 @@
 import json
 import requests
 import xml.etree.ElementTree as ET
+import sys
+import logging
 
 from flask import render_template
 
 from switch2 import app
 from switch2 import redis_db0
+
+log_format = "%(levelname)s %(asctime)s - %(message)s"
+logging.basicConfig(stream = sys.stdout,
+                    format = log_format,
+                    level = app.config['LOGLEVEL'])
+logger = logging.getLogger()
+
 
 @app.route("/reload")
 def load_data():
@@ -127,7 +136,7 @@ def update_states():
                 if value == "true":
                     nobool = "1.0"
                 elif value == "false":
-                    nobool == "0.0"
+                    nobool = "0.0"
                 else:
                     nobool = value
                 currentvalues['values'].update({d: nobool })

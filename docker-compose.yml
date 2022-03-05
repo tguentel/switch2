@@ -49,8 +49,6 @@ services:
     labels:
       - "traefik.frontend.rule=Host:switch2.tangogolf.lan"
       - "traefik.port=5000"
-    volumes:
-      - "./json:/json"
     networks:
       - network
 

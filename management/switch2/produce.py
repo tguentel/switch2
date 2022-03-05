@@ -54,7 +54,7 @@ def produce():
                     }
             rabbitmq_produce(json.dumps(rmq_data), "switch_command")
 
-            jc['values'].update({device[i]: new_value[0]})
+            jc['values'].update({device[i]: new_value})
             redis_db0.set('currentvalues', json.dumps(jc))
 
         else:

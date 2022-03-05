@@ -20,6 +20,8 @@ logger = logging.getLogger()
 
 @app.route("/reload")
 def load_data():
+    logger.info("Reloading devices")
+
     room_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_ROOMLIST']
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATELIST']
     function_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_FUNCTIONLIST']
@@ -88,6 +90,7 @@ def load_data():
 
     redis_db0.set("devicelist", json.dumps(devicelist))
 
+    logger.info("Reload done")
     return "Daten neu geladen\n"
 
 
@@ -108,6 +111,8 @@ def gather_current_values(url):
 
 @app.route("/update")
 def update_states():
+    logger.info("Updating device-status")
+
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATE'] + "?datapoint_id=%s"
     devices = redis_db0.get('devicelist')
     currentvalues = {'values': {}}
@@ -123,14 +128,12 @@ def update_states():
             except:
                 pass
             else:
-                if jde['devices'][d]['model'] == "hmip-broll":
+                if jde['devices'][d]['model'] == "hmip-broll" or jde['devices'][d]['model'] == "hmip-bsm":
                     index = "3"
                 elif jde['devices'][d]['model'] == "hmip-bwth" or jde['devices'][d]['model'] == "hmip-wth-2":
                     index = "1"
                 elif jde['devices'][d]['model'] == "hmip-psm" or jde['devices'][d]['model'] == "hmip-fsm":
                     index = "2"
-                elif jde['devices'][d]['model'] == "hmip-bsm":
-                    index = "4"
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
                 if value == "true":
@@ -143,5 +146,6 @@ def update_states():
 
     redis_db0.set("currentvalues", json.dumps(currentvalues))
 
+    logger.info("Updating done")
     return "Update ausgeführt\n"
 

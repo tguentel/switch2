@@ -75,7 +75,7 @@ def consume(ch, method, properties, body):
     logger.info("ID %s: Retrigger set to %s" % (msg['ise_id'], retrigger))
     if retrigger == "true":
         if msg['retriggered'] == "true":
-            logger.error("ID %s: Message was retriggered before. Giving up.")
+            logger.error("ID %s: Message was retriggered before - giving up" % msg['ise_id'])
         else:
             retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)

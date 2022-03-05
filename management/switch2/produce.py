@@ -58,6 +58,5 @@ def produce():
             redis_db0.set('currentvalues', json.dumps(jc))
 
         else:
-            logger.info("ID %s: New value %s is the same as the old value" % (ise_id, new_value))
-            logger.info("ID %s: Nothing to do" % ise_id)
+            logger.info("ID %s: New value %s is the same as the old value - Nothing to do" % (ise_id, new_value))
     return redirect(request.referrer)

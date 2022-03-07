@@ -11,7 +11,8 @@ RUN apk add --update --no-cache \
 
 RUN pip install --no-cache-dir \
   pika \
-  requests
+  requests \
+  redis
 
 COPY etc/supervisord.conf /etc/supervisord.conf
 

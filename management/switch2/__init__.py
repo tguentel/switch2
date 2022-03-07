@@ -8,7 +8,11 @@ from flask_redis import FlaskRedis
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
+app.config['REDIS_URL'] = app.config['REDIS_BASE'] % 0
 redis_db0 = FlaskRedis(app)
+
+app.config['REDIS_URL'] = app.config['REDIS_BASE'] % 1
+redis_db1 = FlaskRedis(app)
 
 import switch2.sites
 import switch2.load_data

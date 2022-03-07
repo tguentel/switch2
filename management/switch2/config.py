@@ -6,7 +6,7 @@ SEND_FILE_MAX_AGE_DEFAULT = 0
 
 LOGLEVEL = "INFO"
 
-REDIS_URL = "redis://switch2-redis:6379/0"
+REDIS_BASE = "redis://switch2-redis:6379/%s"
 
 HMIP_API_DEVICES = ["hmip-broll", "hmip-bwth", "hmip-wth-2", "hmip-psm", "hmip-fsm", "hmip-bsm"]
 HMIP_API_TYPES = ["LEVEL", "SET_POINT_TEMPERATURE","STATE"]

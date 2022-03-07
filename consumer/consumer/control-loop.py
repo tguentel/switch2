@@ -12,6 +12,8 @@ sys.path.append("/consumer/bin")
 from classes.const import const
 import modules.rabbitmqConnect as rabbitmq
 
+from modules.redisConnect import read as redisread
+
 
 queue_name = "control_loop"
 delay_name = "control_loop_delay"
@@ -68,16 +70,34 @@ def retrigger_publish_message(ise_id, old_value, new_value):
     rabbitmq.channel.basic_publish(exchange='', routing_key=publish_name, body=json.dumps(rmq_data))
     rabbitmq.channel.basic_publish(exchange='', routing_key=delay_name, body=json.dumps(rmq_data))
 
+def check_latest_loop(ise_id, control_loop_value):
+    control_loop_value_expected = redisread(ise_id, const.redishost, const.redisport, const.redisdb).decode('utf-8')
+    try:
+        control_loop_value_expected
+        logger.info("ID %s: Found control loop value %s in database" % (ise_id, control_loop_value_expected))
+    except:
+        logger.error("ID %s: No control loop value found in database" % ise_id)
+        return "value_not_found"
+
+    if control_loop_value == control_loop_value_expected:
+        logger.info("ID %s: Executing control loop with latest value %s" % (ise_id, control_loop_value))
+        return "value_match"
+    else:
+        logger.error("ID %s: Aborting control loop with value %s due to unexpected value %s" % (ise_id, control_loop_value_expected, control_loop_value))
+        return "value_missmatch"
+
 def consume(ch, method, properties, body):
     msg = json.loads(body)
-    actual_value = get_actual_state(msg['ise_id'])
-    retrigger = check_value_changes(msg['ise_id'], msg['old_value'], msg['new_value'], actual_value)
-    logger.info("ID %s: Retrigger set to %s" % (msg['ise_id'], retrigger))
-    if retrigger == "true":
-        if msg['retriggered'] == "true":
-            logger.error("ID %s: Message was retriggered before - giving up" % msg['ise_id'])
-        else:
-            retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
+    is_latest = check_latest_loop(msg['ise_id'], msg['control_loop_value'])
+    if is_latest == "value_match":
+        actual_value = get_actual_state(msg['ise_id'])
+        retrigger = check_value_changes(msg['ise_id'], msg['old_value'], msg['new_value'], actual_value)
+        logger.info("ID %s: Retrigger set to %s" % (msg['ise_id'], retrigger))
+        if retrigger == "true":
+            if msg['retriggered'] == "true":
+                logger.error("ID %s: Message was retriggered before - giving up" % msg['ise_id'])
+            else:
+                retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def main():

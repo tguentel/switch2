@@ -28,20 +28,21 @@ def state_change(ise_id, new_value, retriggered):
     url = "%s%s%s/statechange.cgi?ise_id=%s&new_value=%s" % (const.ccu_proto, const.ccu_addr, const.ccu_res, ise_id, new_value)
     r = requests.get(url)
 
-def start_control_loop(ise_id, old_value, new_value):
+def start_control_loop(ise_id, old_value, new_value, control_loop_value):
     logger.info("ID %s: Start control loop" % ise_id)
     rmq_data = {
         "ise_id": ise_id,
         "new_value": new_value,
         "old_value": old_value,
-        "retriggered": "false"
+        "retriggered": "false",
+        "control_loop_value": control_loop_value
         }
     rabbitmq.channel.basic_publish(exchange='', routing_key=delay_name, body=json.dumps(rmq_data))
 
 def consume(ch, method, properties, body):
     msg = json.loads(body)
     state_change(msg['ise_id'], msg['new_value'], msg['retriggered'])
-    start_control_loop(msg['ise_id'], msg['old_value'], msg['new_value'])
+    start_control_loop(msg['ise_id'], msg['old_value'], msg['new_value'], msg['control_loop_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
     sleep(1)
 

@@ -4,12 +4,15 @@ import pika
 import json
 import sys
 import logging
+import random
+import string
 
 from flask import redirect
 from flask import url_for
 from flask import request
 from switch2 import app
 from switch2 import redis_db0
+from switch2 import redis_db1
 
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
@@ -42,6 +45,7 @@ def produce():
         ise_id = control[i]
         new_value = str(float(request.form.getlist('new_value_' + device[i])[0]))
         old_value = jc['values'][device[i]]
+        control_loop_value = ''.join(random.choices(string.ascii_uppercase +  string.digits, k = 10))
 
         if new_value != old_value:
             logger.info("ID %s: New value %s differs from old value %s" % (ise_id, new_value, old_value))
@@ -50,12 +54,17 @@ def produce():
                     "ise_id": ise_id,
                     "new_value": new_value,
                     "old_value": old_value,
-                    "retriggered": "false"
+                    "retriggered": "false",
+                    "control_loop_value": control_loop_value
                     }
             rabbitmq_produce(json.dumps(rmq_data), "switch_command")
 
             jc['values'].update({device[i]: new_value})
             redis_db0.set('currentvalues', json.dumps(jc))
+
+            logger.info("ID %s: Control-loop value is %s" % (ise_id, control_loop_value))
+            redis_db1.set(ise_id, control_loop_value)
+            redis_db1.expire(ise_id, 300)
 
         else:
             logger.info("ID %s: New value %s is the same as the old value - Nothing to do" % (ise_id, new_value))

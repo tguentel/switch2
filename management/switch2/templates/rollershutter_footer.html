@@ -1,24 +1,23 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/action.js') }}"></script>
 
 <div id="footer-wrapper">
-  <hr />
   <div id="footer-action">
 
-    <div id="navigation-object">
-      <a href="javascript:{}" onclick="rs_action('1.0');"><img src="{{ url_for('static', filename='img/up-arrow.png') }}"></a>
-    </div>
+    <a href="javascript:{}" onclick="rs_action('1.0');">
+      <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/up-arrow.png') }})"></div>
+    </a>
 
-    <div id="navigation-object">
-      <a href="javascript:{}" onclick="rs_action('0.6');"><img src="{{ url_for('static', filename='img/sunglasses.png') }}"></a>
-    </div>
+    <a href="javascript:{}" onclick="rs_action('0.6');">
+      <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/sunglasses.png') }})"></div>
+    </a>
 
-    <div id="navigation-object">
-      <a href="javascript:{}" onclick="rs_action('0.2');"><img src="{{ url_for('static', filename='img/visibility.png') }}"></a>
-    </div>
+    <a href="javascript:{}" onclick="rs_action('0.2');">
+      <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/visibility.png') }})"></div>
+    </a>
 
-    <div id="navigation-object">
-      <a href="javascript:{}" onclick="rs_action('0.0');"><img src="{{ url_for('static', filename='img/down-arrow.png') }}"></a>
-    </div>
+    <a href="javascript:{}" onclick="rs_action('0.0');">
+      <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/down-arrow.png') }})"></div>
+    </a>
 
   </div>
 </div>

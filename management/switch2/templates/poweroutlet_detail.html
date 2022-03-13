@@ -1,16 +1,17 @@
-<div id="object">
-    {{ name }}
-</div>
-<div id="object-wrapper">
+<div id="object-card">
+  <div id="object-wrapper">
+    <div id="object">
+      {{ name }}
+    </div>
+  </div>
   <div id="object-slider">
     <input type="hidden" name="control" value="{{ control }}">
     <input type="hidden" name="device" value="{{ device }}">
-    <input type="radio" name="new_value_{{ device }}" id="radio_true_{{ device }}" value="1">
+    <input type="radio" class="po-radio" name="new_value_{{ device }}" id="radio_true_{{ device }}" value="1">
     <label for="radio_new_value_{{ device }}">AN</label>
-    <input type="radio" name="new_value_{{ device }}" id="radio_false_{{ device }}" value="0">
+    <input type="radio" class="po-radio"  name="new_value_{{ device }}" id="radio_false_{{ device }}" value="0">
     <label for="radio_new_value_{{ device }}">AUS</label>
   </div>
 </div>
-
 <script type="text/javascript">var current = {{ current }}; var device = {{ device }};</script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/radio_checked.js') }}"></script>

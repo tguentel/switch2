@@ -1,8 +1,16 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/slider_value.js') }}"></script>
-<div id="object">
-    {{ name }}
-</div>
-<div id="object-wrapper">
+
+<div id="object-card">
+
+  <div id="object-wrapper">
+    <div id="object">
+      {{ name.replace('Rollladen','') }}
+    </div>
+    <div id="object-value">
+      <span id="{{ device }}_slider">{{ (current|float * 100)|int }}</span> %
+    </div>
+  </div>
+
   <div id="object-slider">
     <input type="hidden" name="control" value="{{ control }}">
     <input type="hidden" name="device" value="{{ device }}">
@@ -21,7 +29,5 @@
       <option value="1.0"></option>
     </datalist>
   </div>
-  <div id="object-value">
-    <span id="{{ device }}_slider">{{ (current|float * 100)|int }}</span> %
-  </div>
+
 </div>

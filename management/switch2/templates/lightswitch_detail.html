@@ -10,7 +10,7 @@
       {% if model == "hmip-fdt" %}
       <span id="{{ device }}_slider">{{ (current|float * 100)|int }}</span> {{ unit }}
       {% else %}
-      <span id="{{ device }}_slider">{{ current }}</span>
+      <span id="{{ device }}_slider">{{ current.replace('1.0','AN').replace('0.0','AUS') }}</span>
       {% endif %}
     </div>
   </div>

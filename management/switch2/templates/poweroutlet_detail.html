@@ -7,7 +7,7 @@
       {{ name.replace('Steckdose','') }}
     </div>
     <div id="object-value">
-      <span id="{{ device }}_slider">{{ current }}</span>
+      <span id="{{ device }}_slider">{{ current.replace('1.0','AN').replace('0.0','AUS') }}</span>
     </div>
   </div>
 

@@ -34,9 +34,9 @@ def get_actual_state(ise_id):
         jda = json.loads(str(s.attrib).replace("'",'"'))
         value = jda['value']
         if value == "true":
-            nobool = 1
+            nobool = 1.0
         elif value == "false":
-            nobool = 0
+            nobool = 0.0
         else:
             nobool = value
     try:

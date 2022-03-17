@@ -137,9 +137,9 @@ def update_states():
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
                 if value == "true":
-                    nobool = "1"
+                    nobool = "1.0"
                 elif value == "false":
-                    nobool = "0"
+                    nobool = "0.0"
                 else:
                     nobool = value
                 currentvalues['values'].update({d: nobool })

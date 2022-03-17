@@ -6,7 +6,7 @@ import sys
 from flask import render_template
 
 from switch2 import app
-from switch2 import redis_db0
+from switch2 import redis_db1
 
 
 def get_navstart(room_id):
@@ -18,7 +18,7 @@ def get_navstart(room_id):
 
 @app.route("/")
 def main_menu():
-    devices = redis_db0.get('devicelist')
+    devices = redis_db1.get('devicelist')
     if devices == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
 
@@ -64,8 +64,8 @@ def main_menu():
 
 @app.route("/obj/<int:object_id>/<string:category>/")
 def objects_menu(object_id, category):
-    get_objects = redis_db0.get('devicelist')
-    get_current = redis_db0.get('currentvalues')
+    get_objects = redis_db1.get('devicelist')
+    get_current = redis_db1.get('currentvalues')
 
     if get_objects == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"

@@ -11,8 +11,8 @@ from flask import redirect
 from flask import url_for
 from flask import request
 from switch2 import app
-from switch2 import redis_db0
 from switch2 import redis_db1
+from switch2 import redis_db2
 
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
@@ -36,7 +36,7 @@ def produce():
     device = request.form.getlist('device')
 
     for i in range(len(control)):
-        get_current = redis_db0.get('currentvalues')
+        get_current = redis_db1.get('currentvalues')
         if get_current == None:
             return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
 
@@ -60,11 +60,11 @@ def produce():
             rabbitmq_produce(json.dumps(rmq_data), "switch_command")
 
             jc['values'].update({device[i]: new_value})
-            redis_db0.set('currentvalues', json.dumps(jc))
+            redis_db1.set('currentvalues', json.dumps(jc))
 
             logger.info("ID %s: Control-loop value is %s" % (ise_id, control_loop_value))
-            redis_db1.set(ise_id, control_loop_value)
-            redis_db1.expire(ise_id, 300)
+            redis_db2.set(ise_id, control_loop_value)
+            redis_db2.expire(ise_id, 300)
 
         else:
             logger.info("ID %s: New value %s is the same as the old value - Nothing to do" % (ise_id, new_value))

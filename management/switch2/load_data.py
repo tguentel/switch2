@@ -9,7 +9,7 @@ import logging
 from flask import render_template
 
 from switch2 import app
-from switch2 import redis_db0
+from switch2 import redis_db1
 
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
@@ -88,7 +88,7 @@ def load_data():
                                     'name': functionlist['functions'][function]['name']
                                     })
 
-    redis_db0.set("devicelist", json.dumps(devicelist))
+    redis_db1.set("devicelist", json.dumps(devicelist))
 
     logger.info("Reload done")
     return "Daten neu geladen\n"
@@ -114,7 +114,7 @@ def update_states():
     logger.info("Updating device-status")
 
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATE'] + "?datapoint_id=%s"
-    devices = redis_db0.get('devicelist')
+    devices = redis_db1.get('devicelist')
     currentvalues = {'values': {}}
 
     if devices == None:
@@ -144,7 +144,7 @@ def update_states():
                     nobool = value
                 currentvalues['values'].update({d: nobool })
 
-    redis_db0.set("currentvalues", json.dumps(currentvalues))
+    redis_db1.set("currentvalues", json.dumps(currentvalues))
 
     logger.info("Updating done")
     return "Update ausgeführt\n"

@@ -4,7 +4,7 @@
 
   <div id="object-wrapper">
     <div id="object">
-      {{ name }}
+      {{ name.replace('Heizung','') }}
     </div>
     <div id="object-value">
       <span id="{{ device }}_slider">{{ (current|float * 1)|int }}</span> {{ unit }}

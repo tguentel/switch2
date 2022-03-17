@@ -7,29 +7,22 @@
       {{ name }}
     </div>
     <div id="object-value">
-    <span id="{{ device }}_slider">{{ (current|float * 1)|int }}</span> °C
+      <span id="{{ device }}_slider">{{ (current|float * 1)|int }}</span> {{ unit }}
     </div>
   </div>
 
   <div id="object-slider">
     <input type="hidden" name="control" value="{{ control }}">
     <input type="hidden" name="device" value="{{ device }}">
-    <input type="range" name="new_value_{{ device }}" id="range_new_value_{{ device }}" value="{{ current }}" list="{{ device }}_tickmarks" min="13.0" max="26.0" step="1" oninput="th_slider_value(this.value, '{{ device }}')">
+    <input type="range" name="new_value_{{ device }}" id="range_new_value_{{ device }}" value="{{ current }}" list="{{ device }}_tickmarks" min="{{ tickmarks[0] }}" max="{{ tickmarks[1] }}" step="{{ tickmarks[2] }}" oninput="th_slider_value(this.value, '{{ device }}')">
     <datalist id="{{ device }}_tickmarks">
-      <option value="13.0"></option>
-      <option value="14.0"></option>
-      <option value="15.0"></option>
-      <option value="16.0"></option>
-      <option value="17.0"></option>
-      <option value="18.0"></option>
-      <option value="19.0"></option>
-      <option value="20.0"></option>
-      <option value="21.0"></option>
-      <option value="22.0"></option>
-      <option value="23.0"></option>
-      <option value="24.0"></option>
-      <option value="25.0"></option>
-      <option value="26.0"></option>
+      {% set tm = tickmarks[0] %}
+      {% for n in range(tickmarks[3]) %}
+      {% if tm <= tickmarks[1] %}
+      <option value="{{ tm }}"></option>
+      {% set tm = tm + tickmarks[2] %}
+      {% endif %}
+      {% endfor %}
     </datalist>
   </div>
 

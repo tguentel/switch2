@@ -1,6 +1,10 @@
-{% set show = {'rs': False, 'th': False, 'po': False} -%}
+{% set show = { 'rs': False, 'th': False, 'po': False, 'li': False } -%}
 
 {% for r in object_data -%}
+
+  {% if r['function'] != [] %}
+    {% set funct_id = r['function'][0]['id'] %}
+  {% endif %}
 
   {% if "hmip-broll" in r['model'] %}
     {% if show.update({'rs': True}) %}{% endif %}
@@ -10,8 +14,12 @@
     {% if show.update({'th': True}) %}{% endif %}
   {% endif %}
 
-  {% if "hmip-fsm" in r['model'] or "hmip-psm" in r['model'] or "hmip-bsm" in r['model'] %}
-    {% if show.update({'po': True}) %}{% endif %}
+  {% if "hmip-fsm" in r['model'] or "hmip-psm" in r['model'] or "hmip-bsm" in r['model'] or "hmip-fdt" in r['model'] %}
+    {% if funct_id == "1223" %}
+      {% if show.update({'po': True}) %}{% endif %}
+    {% elif funct_id == "1214" %}
+      {% if show.update({'li': True}) %}{% endif %}
+    {% endif %}
   {% endif %}
 
 {% endfor -%}
@@ -27,6 +35,12 @@
   {% if show.th == True %}
   <a href="/obj/{{ object_id }}/th/">
     <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/heizung.png') }})"></div>
+  </a>
+  {% endif %}
+
+  {% if show.li == True %}
+  <a href="/obj/{{ object_id }}/li/">
+    <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/light.png') }})"></div>
   </a>
   {% endif %}
 

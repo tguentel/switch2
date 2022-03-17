@@ -1,0 +1,40 @@
+<form id="produce_li" action="{{ url_for('produce') }}", method="post">
+
+  {% for o in object_data -%}
+
+    {% set unit = "" %}
+
+    {% if o['function'] != [] %}
+      {% set funct_id = o['function'][0]['id'] %}
+    {% endif %}
+
+    {% if "hmip-fsm" in o['model'] or "hmip-psm" in o['model'] or "hmip-bsm" in o['model'] or "hmip-fdt" in o['model'] -%}
+      {% if funct_id == "1214" %}
+
+        {% if "hmip-fsm" in o['model'] or "hmip-fdt" in o['model'] %}
+          {% set index = "2" %}
+        {% elif "hmip-psm" in o['model'] %}
+          {% set index = "3" %}
+        {% elif "hmip-bsm" in o['model'] %}
+          {% set index = "6" %}
+        {% endif %}
+
+        {% if "hmip-fdt" in o['model'] %}
+          {% set unit = "%" %}
+          {% set tickmarks = [0.0, 1.0, 0.1, 10] %}
+        {% else %}
+          {% set unit = "" %}
+          {% set tickmarks = [0, 1, 1, 1] %}
+        {% endif %}
+
+        {% set name = o['name'] %}
+        {% set device = o['device'] %}
+        {% set room_id = o['room']['id'] %}
+        {% set current = o['current'] %}
+        {% set control = o['index'][index]['datapoint'] %}
+        {% set model = o['model'] %}
+        {% include "lightswitch_detail.html" %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</form>

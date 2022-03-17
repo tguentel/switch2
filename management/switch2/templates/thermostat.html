@@ -1,6 +1,9 @@
 <form id="produce_th" action="{{ url_for('produce') }}", method="post">
   {% for o in object_data -%}
-    {% if "hmip-bwth" in o['model'] or "hmip-wth-2" in o['model'] -%}
+
+  {% if "hmip-bwth" in o['model'] or "hmip-wth-2" in o['model'] -%}
+      {% set unit = "°C" %}
+      {% set tickmarks = [13.0, 26.0, 1.0, 13] %}
       {% set name = o['name'] %}
       {% set device = o['device'] %}
       {% set room_id = o['room']['id'] %}
@@ -8,5 +11,6 @@
       {% set control = o['index']['1']['datapoint'] %}
       {% include "thermostat_detail.html" %}
     {% endif %}
-  {% endfor %}
+
+    {% endfor %}
 </form>

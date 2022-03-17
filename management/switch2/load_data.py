@@ -130,16 +130,16 @@ def update_states():
             else:
                 if jde['devices'][d]['model'] == "hmip-broll" or jde['devices'][d]['model'] == "hmip-bsm":
                     index = "3"
-                elif jde['devices'][d]['model'] == "hmip-bwth" or jde['devices'][d]['model'] == "hmip-wth-2":
+                elif jde['devices'][d]['model'] == "hmip-bwth" or jde['devices'][d]['model'] == "hmip-wth-2" or jde['devices'][d]['model'] == "hmip-fdt":
                     index = "1"
                 elif jde['devices'][d]['model'] == "hmip-psm" or jde['devices'][d]['model'] == "hmip-fsm":
                     index = "2"
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
                 if value == "true":
-                    nobool = "1.0"
+                    nobool = "1"
                 elif value == "false":
-                    nobool = "0.0"
+                    nobool = "0"
                 else:
                     nobool = value
                 currentvalues['values'].update({d: nobool })

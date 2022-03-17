@@ -1,19 +1,30 @@
 <form id="produce_po" action="{{ url_for('produce') }}", method="post">
   {% for o in object_data -%}
-    {% if "hmip-fsm" in o['model'] or "hmip-psm" in o['model'] or "hmip-bsm" in o['model']-%}
-      {% if "hmip-fsm" in o['model'] %}
-        {% set index = "2" %}
-      {% elif "hmip-psm" in o['model'] %}
-        {% set index = "3" %}
-      {% elif "hmip-bsm" in o['model'] %}
-        {% set index = "6" %}
+
+    {% if o['function'] != [] %}
+      {% set funct_id = o['function'][0]['id'] %}
+    {% endif %}
+
+    {% if "hmip-fsm" in o['model'] or "hmip-psm" in o['model'] or "hmip-bsm" in o['model'] -%}
+      {% if funct_id == "1223" %}
+        {% if "hmip-fsm" in o['model'] %}
+          {% set index = "2" %}
+        {% elif "hmip-psm" in o['model'] %}
+          {% set index = "3" %}
+        {% elif "hmip-bsm" in o['model'] %}
+          {% set index = "6" %}
+        {% endif %}
+
+        {% set unit = "" %}
+        {% set tickmarks = [0, 1, 1, 1] %}
+        {% set name = o['name'] %}
+        {% set device = o['device'] %}
+        {% set room_id = o['room']['id'] %}
+        {% set current = o['current'] %}
+        {% set control = o['index'][index]['datapoint'] %}
+        {% include "poweroutlet_detail.html" %}
       {% endif %}
-      {% set name = o['name'] %}
-      {% set device = o['device'] %}
-      {% set room_id = o['room']['id'] %}
-      {% set current = o['current'] %}
-      {% set control = o['index'][index]['datapoint'] %}
-      {% include "poweroutlet_detail.html" %}
+
     {% endif %}
   {% endfor %}
 </form>

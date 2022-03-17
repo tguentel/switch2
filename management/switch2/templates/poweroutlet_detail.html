@@ -1,17 +1,29 @@
+<script type="text/javascript" src="{{ url_for('static', filename='js/slider_value.js') }}"></script>
+
 <div id="object-card">
+
   <div id="object-wrapper">
     <div id="object">
-      {{ name }}
+      {{ name.replace('Steckdose','') }}
+    </div>
+    <div id="object-value">
+      <span id="{{ device }}_slider">{{ current }}</span>
     </div>
   </div>
+
   <div id="object-slider">
     <input type="hidden" name="control" value="{{ control }}">
     <input type="hidden" name="device" value="{{ device }}">
-    <input type="radio" class="po-radio" name="new_value_{{ device }}" id="radio_true_{{ device }}" value="1">
-    <label for="radio_new_value_{{ device }}">AN</label>
-    <input type="radio" class="po-radio"  name="new_value_{{ device }}" id="radio_false_{{ device }}" value="0">
-    <label for="radio_new_value_{{ device }}">AUS</label>
+    <input type="range" name="new_value_{{ device }}" id="range_new_value_{{ device }}" value="{{ current }}" list="{{ device }}_tickmarks" min="{{ tickmarks[0] }}" max="{{ tickmarks[1] }}" step="{{ tickmarks[2] }}" oninput="po_slider_value(this.value, '{{ device }}')">
+    <datalist id="{{ device }}_tickmarks">
+      {% set tm = tickmarks[0] %}
+      {% for n in range(tickmarks[3]) %}
+      {% if tm <= tickmarks[1] %}
+      <option value="{{ tm }}"></option>
+      {% set tm = tm + tickmarks[2] %}
+      {% endif %}
+      {% endfor %}
+    </datalist>
   </div>
+
 </div>
-<script type="text/javascript">var current = {{ current }}; var device = {{ device }};</script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/radio_checked.js') }}"></script>

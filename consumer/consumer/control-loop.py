@@ -59,13 +59,14 @@ def check_value_changes(ise_id, old_value, new_value, actual_value):
         logger.error("ID %s: Value check was not successful" % ise_id)
     return retrigger
 
-def retrigger_publish_message(ise_id, old_value, new_value):
+def retrigger_publish_message(ise_id, old_value, new_value, control_loop_value):
     logger.info("ID: %s: Republish message to reach the disired state" % ise_id)
     rmq_data = {
         "ise_id": ise_id,
         "new_value": new_value,
         "old_value": old_value,
-        "retriggered": "true"
+        "retriggered": "true",
+        "control_loop_value": control_loop_value
         }
     rabbitmq.channel.basic_publish(exchange='', routing_key=publish_name, body=json.dumps(rmq_data))
     rabbitmq.channel.basic_publish(exchange='', routing_key=delay_name, body=json.dumps(rmq_data))
@@ -97,7 +98,7 @@ def consume(ch, method, properties, body):
             if msg['retriggered'] == "true":
                 logger.error("ID %s: Message was retriggered before - giving up" % msg['ise_id'])
             else:
-                retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'])
+                retrigger_publish_message(msg['ise_id'], msg['old_value'], msg['new_value'], msg['control_loop_value'])
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def main():

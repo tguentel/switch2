@@ -19,9 +19,12 @@ def get_navstart(room_id):
 @app.route("/")
 def main_menu():
     devices = redis_db1.get('devicelist')
+    sysvars = redis_db1.get('sysvarlist')
 
     if devices == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
+    elif sysvars == None:
+        return "Keine Systemvariablen gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
     else:
         jd = json.loads(devices)
         rooms = []
@@ -52,7 +55,13 @@ def main_menu():
                         f.update({'navstart': navstart})
                         functions.append(f)
 
+        jv = json.loads(sysvars)
+        variables = []
+        for v in jv['sysvars']:
+            vars_all = {'id': v, 'name': jv['sysvars'][v]['name'], 'navstart': 'sv' }
+            variables.append(vars_all)
 
+        variables = sorted(variables, key=lambda item: item.get("name"))
         rooms = sorted(rooms, key=lambda item: item.get("name"))
         functions = sorted(functions, key=lambda item: item.get("name"))
 
@@ -60,6 +69,7 @@ def main_menu():
                 'index.html',
                 rooms = rooms,
                 functions = functions,
+                variables = variables,
                 page_title = app.config['PAGE_TITLE']
                 )
 
@@ -81,25 +91,20 @@ def objects_menu(object_id, category):
     jv = json.loads(get_sysvars)
 
     object_data = []
-    for o in jo['devices']:
-        try:
-            jo['devices'][o]['room']['id']
-        except:
-            pass
-        else:
-            if int(jo['devices'][o]['room']['id']) == object_id:
-                try:
-                    jc['values'][o]
-                except:
-                    pass
-                else:
-                    current = jc['values'][o]
-                    jo['devices'][o].update({'current': current })
-                    jo['devices'][o].update({'device': o })
-                    object_data.append(jo['devices'][o])
-
-            for of in jo['devices'][o]['function']:
-                if int(of['id']) == object_id:
+    if category == "sv":
+        for v in jv['sysvars']:
+            if int(v) == object_id:
+                current = jc['values'][v]
+                jv['sysvars'][v].update({'sysvar': v, 'current': current})
+                object_data.append(jv['sysvars'][v])
+    else:
+        for o in jo['devices']:
+            try:
+                jo['devices'][o]['room']['id']
+            except:
+                pass
+            else:
+                if int(jo['devices'][o]['room']['id']) == object_id:
                     try:
                         jc['values'][o]
                     except:
@@ -110,11 +115,22 @@ def objects_menu(object_id, category):
                         jo['devices'][o].update({'device': o })
                         object_data.append(jo['devices'][o])
 
+                for of in jo['devices'][o]['function']:
+                    if int(of['id']) == object_id:
+                        try:
+                            jc['values'][o]
+                        except:
+                            pass
+                        else:
+                            current = jc['values'][o]
+                            jo['devices'][o].update({'current': current })
+                            jo['devices'][o].update({'device': o })
+                            object_data.append(jo['devices'][o])
+
     return render_template(
         'object.html',
         object_data = object_data,
         object_id = object_id,
         category = category,
-        svar_data = jv,
         page_title = app.config['PAGE_TITLE']
         )

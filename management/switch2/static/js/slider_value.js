@@ -1,5 +1,5 @@
 function sv_slider_value(value, id, val0, val1) {
-  document.getElementById(`${id}_slider`).innerHTML = value.replace('1', val1).replace('0', val0);
+  document.getElementById(`${id}_slider`).innerHTML = value.replace('0', val0).replace('1', val1);
 }
 
 function po_slider_value(value, id) {

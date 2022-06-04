@@ -1,0 +1,13 @@
+<form id="produce_sv" action="{{ url_for('produce') }}", method="post">
+  {% for o in object_data -%}
+    {% set unit = "" %}
+    {% set tickmarks = [0.0, 1.0, 1, 1] %}
+    {% set device = o['sysvar'] %}
+    {% set control = o['sysvar'] %}
+    {% set name = o['name'] %}
+    {% set current = o['current'] %}
+    {% set val0 = o['val0'] %}
+    {% set val1 = o['val1'] %}
+    {% include "sysvars_detail.html" %}
+  {% endfor %}
+</form>

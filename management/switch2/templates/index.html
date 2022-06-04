@@ -20,7 +20,15 @@
     {% for function in functions %}
     <a href="/obj/{{ function['id'] }}/{{ function['navstart'] }}/">{{ function['name'] }}</a>
     {% endfor %}
-    <a href="/obj/0000/sv/">Systemvariablen</a>
+  </div>
+
+  <button class="dropdown-btn">Variablen
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    {% for variable in variables %}
+    <a href="/obj/{{ variable['id'] }}/{{ variable['navstart'] }}/">{{ variable['name'] }}</a>
+    {% endfor %}
   </div>
 
   <button class="dropdown-btn">Wartung

@@ -111,6 +111,7 @@ def load_data():
     logger.info("Reload done")
     return "Daten neu geladen\n"
 
+
 def convert_to_float(value):
     if value == "true":
         nobool = "1.0"
@@ -119,7 +120,6 @@ def convert_to_float(value):
     else:
         nobool = value
     return nobool
-
 
 def gather_current_values(url):
     s = requests.get(url)

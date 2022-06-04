@@ -1,4 +1,4 @@
-{% set show = { 'rs': False, 'th': False, 'po': False, 'li': False } -%}
+{% set show = { 'rs': False, 'th': False, 'po': False, 'li': False, 'sv': False } -%}
 
 {% for r in object_data -%}
 
@@ -24,6 +24,8 @@
         {% if show.update({'li': True}) %}{% endif %}
       {% endif %}
     {% endif %}
+  {% else %}
+    {% if show.update({'sv': True}) %}{% endif %}
   {% endif %}
 
 {% endfor -%}
@@ -51,6 +53,12 @@
   {% if show.po == True %}
   <a href="/obj/{{ object_id }}/po/">
     <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/power.png') }})"></div>
+  </a>
+  {% endif %}
+
+  {% if show.sv == True %}
+  <a href="/obj/{{ object_id }}/sv/">
+    <div id="navigation-object" style="background-image: url({{ url_for('static', filename='img/variable.png') }})"></div>
   </a>
   {% endif %}
 

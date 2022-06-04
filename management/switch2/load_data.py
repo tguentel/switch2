@@ -11,6 +11,7 @@ from flask import render_template
 from switch2 import app
 from switch2 import redis_db1
 
+
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
                     format = log_format,
@@ -25,6 +26,7 @@ def load_data():
     room_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_ROOMLIST']
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATELIST']
     function_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_FUNCTIONLIST']
+    sysvar_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_SYSVARLIST']
 
     r = requests.get(room_url)
     r_root = ET.fromstring(r.text)
@@ -34,6 +36,21 @@ def load_data():
 
     f = requests.get(function_url)
     f_root = ET.fromstring(f.text)
+
+    v = requests.get(sysvar_url)
+    v_root = ET.fromstring(v.text)
+
+    varlist = {'sysvars': {}}
+    for v in v_root:
+        jv = json.loads(str(v.attrib).replace("'",'"'))
+        sysvar = jv['ise_id']
+        unit = jv['unit']
+        name = jv['name']
+        value = jv['value']
+        val0 = jv['value_name_0']
+        val1 = jv['value_name_1']
+        if unit == "remote":
+            varlist['sysvars'].update({sysvar: {'name': name, 'value': value, "val0": val0, "val1": val1 }})
 
     roomlist = {'rooms': {}}
     for r in r_root:
@@ -89,6 +106,7 @@ def load_data():
                                     })
 
     redis_db1.set("devicelist", json.dumps(devicelist))
+    redis_db1.set("sysvarlist", json.dumps(varlist))
 
     logger.info("Reload done")
     return "Daten neu geladen\n"
@@ -148,4 +166,3 @@ def update_states():
 
     logger.info("Updating done")
     return "Update ausgeführt\n"
-

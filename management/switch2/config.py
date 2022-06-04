@@ -14,6 +14,7 @@ HMIP_API_BASE_URL = "http://192.168.54.75/addons/xmlapi/"
 HMIP_API_ROOMLIST = "roomlist.cgi"
 HMIP_API_STATELIST = "statelist.cgi"
 HMIP_API_FUNCTIONLIST = "functionlist.cgi"
+HMIP_API_SYSVARLIST = "sysvarlist.cgi"
 HMIP_API_STATE = "state.cgi"
 
 MHIP_MODEL_PO = ["hmip-psm", "hmip-fsm", "hmip-bsm", "hmip-fdt"]

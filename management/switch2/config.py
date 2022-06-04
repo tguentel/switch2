@@ -16,6 +16,7 @@ HMIP_API_STATELIST = "statelist.cgi"
 HMIP_API_FUNCTIONLIST = "functionlist.cgi"
 HMIP_API_SYSVARLIST = "sysvarlist.cgi"
 HMIP_API_STATE = "state.cgi"
+HMIP_API_SYSVAR = "sysvar.cgi"
 
 MHIP_MODEL_PO = ["hmip-psm", "hmip-fsm", "hmip-bsm", "hmip-fdt"]
 MHIP_MODEL_TH = ["hmip-wth-2", "hmip-bwth"]

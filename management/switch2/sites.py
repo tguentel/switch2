@@ -19,9 +19,9 @@ def get_navstart(room_id):
 @app.route("/")
 def main_menu():
     devices = redis_db1.get('devicelist')
+
     if devices == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
-
     else:
         jd = json.loads(devices)
         rooms = []
@@ -52,6 +52,7 @@ def main_menu():
                         f.update({'navstart': navstart})
                         functions.append(f)
 
+
         rooms = sorted(rooms, key=lambda item: item.get("name"))
         functions = sorted(functions, key=lambda item: item.get("name"))
 
@@ -66,14 +67,18 @@ def main_menu():
 def objects_menu(object_id, category):
     get_objects = redis_db1.get('devicelist')
     get_current = redis_db1.get('currentvalues')
+    get_sysvars = redis_db1.get('sysvarlist')
 
     if get_objects == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
+    elif get_sysvars == None:
+        return "Keine Systemvariablen gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
     elif get_current == None:
         return "Keine Ger&auml;tedaten gefunden. <a href='/update'>Update ausf&uuml;hren.</a>"
 
     jo = json.loads(get_objects)
     jc = json.loads(get_current)
+    jv = json.loads(get_sysvars)
 
     object_data = []
     for o in jo['devices']:
@@ -92,6 +97,7 @@ def objects_menu(object_id, category):
                     jo['devices'][o].update({'current': current })
                     jo['devices'][o].update({'device': o })
                     object_data.append(jo['devices'][o])
+
             for of in jo['devices'][o]['function']:
                 if int(of['id']) == object_id:
                     try:
@@ -109,5 +115,6 @@ def objects_menu(object_id, category):
         object_data = object_data,
         object_id = object_id,
         category = category,
+        svar_data = jv,
         page_title = app.config['PAGE_TITLE']
         )

@@ -21,7 +21,7 @@ logger = logging.getLogger()
 
 @app.route("/reload")
 def load_data():
-    logger.info("Reloading devices")
+    logger.info("Reloading devices, rooms, functions and sysvars")
 
     room_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_ROOMLIST']
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATELIST']
@@ -46,11 +46,11 @@ def load_data():
         sysvar = jv['ise_id']
         unit = jv['unit']
         name = jv['name']
-        value = jv['value']
+        current = jv['variable']
         val0 = jv['value_name_0']
         val1 = jv['value_name_1']
         if unit == "remote":
-            varlist['sysvars'].update({sysvar: {'name': name, 'value': value, "val0": val0, "val1": val1 }})
+            varlist['sysvars'].update({sysvar: {'name': name, "current": current, "val0": val0, "val1": val1 }})
 
     roomlist = {'rooms': {}}
     for r in r_root:
@@ -111,6 +111,15 @@ def load_data():
     logger.info("Reload done")
     return "Daten neu geladen\n"
 
+def convert_to_float(value):
+    if value == "true":
+        nobool = "1.0"
+    elif value == "false":
+        nobool = "0.0"
+    else:
+        nobool = value
+    return nobool
+
 
 def gather_current_values(url):
     s = requests.get(url)
@@ -129,15 +138,18 @@ def gather_current_values(url):
 
 @app.route("/update")
 def update_states():
-    logger.info("Updating device-status")
+    logger.info("Updating device and sysvar status")
 
     state_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_STATE'] + "?datapoint_id=%s"
+    sysvar_url = app.config['HMIP_API_BASE_URL'] + app.config['HMIP_API_SYSVAR'] + "?ise_id=%s"
     devices = redis_db1.get('devicelist')
+    sysvars = redis_db1.get('sysvarlist')
     currentvalues = {'values': {}}
 
     if devices == None:
         return "Keine Ger&auml;te gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
-
+    elif sysvars == None:
+        return "Keine Systemvariablen gefunden. <a href='/reload'>Reload ausf&uuml;hren.</a>"
     else:
         jde = json.loads(devices)
         for d in jde['devices']:
@@ -154,13 +166,14 @@ def update_states():
                     index = "2"
                 datapoint = jde['devices'][d]['index'][index]['datapoint']
                 value = gather_current_values(state_url % datapoint)
-                if value == "true":
-                    nobool = "1.0"
-                elif value == "false":
-                    nobool = "0.0"
-                else:
-                    nobool = value
+                nobool = convert_to_float(value)
                 currentvalues['values'].update({d: nobool })
+
+        jsv = json.loads(sysvars)
+        for v in jsv['sysvars']:
+            value = gather_current_values(sysvar_url % v )
+            nobool = convert_to_float(value)
+            currentvalues['values'].update({v: nobool })
 
     redis_db1.set("currentvalues", json.dumps(currentvalues))
 

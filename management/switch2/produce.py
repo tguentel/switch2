@@ -14,6 +14,7 @@ from switch2 import app
 from switch2 import redis_db1
 from switch2 import redis_db2
 
+
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(stream = sys.stdout,
                     format = log_format,
